@@ -1,0 +1,9 @@
+node_modules
+.turbo
+.next
+dist
+build
+out
+coverage
+pnpm-lock.yaml
+apps/frontend/package-lock.json

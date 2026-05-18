@@ -1,28 +1,28 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { Providers } from "./providers";
-import "./globals.css";
+import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+import { Providers } from './providers';
+import './globals.css';
 
 const iranSansX = localFont({
   src: [
     {
-      path: "../fonts/IRANSansX-Regular.woff",
-      weight: "400",
-      style: "normal",
+      path: './../assets/fonts/IRANSansX-Regular.woff',
+      weight: '400',
+      style: 'normal',
     },
     {
-      path: "../fonts/IRANSansX-Bold.woff2",
-      weight: "700",
-      style: "normal",
+      path: './../assets/fonts/IRANSansX-Bold.woff2',
+      weight: '700',
+      style: 'normal',
     },
   ],
-  variable: "--font-iran-sans-x",
-  display: "swap",
+  variable: '--font-iran-sans-x',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: "سایبر | فروشگاه",
-  description: "فروشگاه آنلاین محصولات دیجیتال",
+  title: 'هوشمندسازان | فروشگاه',
+  description: 'فروشگاه آنلاین محصولات دیجیتال',
 };
 
 export default function RootLayout({

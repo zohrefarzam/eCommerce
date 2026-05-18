@@ -1,0 +1,41 @@
+---
+description: Use base Image component only — no raw img or next/image imports
+globs: apps/frontend/**/*.{tsx,ts}
+alwaysApply: false
+---
+
+# Frontend images
+
+All images in `apps/frontend` must use the shared base component. Do not use `<img>` or import from `next/image` directly in app code.
+
+## Required
+
+```tsx
+import { Image } from "@/components/baseComponents/image";
+
+<div className="relative aspect-square">
+  <Image
+    src={src}
+    alt="Description"
+    sizes="(max-width: 640px) 50vw, 320px"
+    fit="contain"
+  />
+</div>
+```
+
+- Parent must be `position: relative` (e.g. `className="relative …"`) because `Image` uses `fill`.
+- Always pass meaningful `alt` and a realistic `sizes` string.
+- Use `fit="cover"` for photo backgrounds; `fit="contain"` for product shots on neutral/dark backgrounds.
+- `src` may be `StaticImageData` (import) or `string` (API/CDN URL or public path).
+
+## Forbidden
+
+```tsx
+// ❌ Raw HTML
+<img src="…" alt="…" />
+
+// ❌ Direct next/image in components, sections, or pages
+import Image from "next/image";
+```
+
+The only `<img>` in the project lives inside `baseComponents/image.tsx` for remote URLs.
