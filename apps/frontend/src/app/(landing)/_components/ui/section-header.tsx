@@ -6,15 +6,17 @@ type SectionHeaderProps = {
 
 export function SectionHeader({ eyebrow, title, actions }: SectionHeaderProps) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 w-full">
-      <div className="flex flex-col gap-1">
+    <div className="flex w-full flex-wrap items-center justify-between gap-3 sm:gap-4">
+      <div className="flex min-w-0 flex-col gap-0.5 sm:gap-1">
         {eyebrow ? (
-          <p className="text-sm font-medium text-muted">{eyebrow}</p>
+          <p className="text-xs font-medium text-muted sm:text-sm">{eyebrow}</p>
         ) : null}
-        <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+        <h2 className="text-lg font-bold text-foreground sm:text-xl md:text-2xl">
+          {title}
+        </h2>
       </div>
       {actions ? (
-        <div className="flex items-center gap-2">{actions}</div>
+        <div className="flex shrink-0 items-center gap-2">{actions}</div>
       ) : null}
     </div>
   );

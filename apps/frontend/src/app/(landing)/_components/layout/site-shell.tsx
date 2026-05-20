@@ -1,9 +1,6 @@
 import { Children, Fragment } from 'react';
 import { SectionDivider } from '@/landing/_components/ui/section-divider';
-
-/** Horizontal frame aligned with main sections (hero, grids, …). */
-export const STOREFRONT_CONTENT_FRAME =
-  'mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-24 xl:px-[160px]';
+import { STOREFRONT_CONTENT_FRAME } from '@/lib/storefront-layout';
 
 type SiteShellProps = {
   children: React.ReactNode;
@@ -14,7 +11,9 @@ export function SiteShell({ children }: SiteShellProps) {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className={`${STOREFRONT_CONTENT_FRAME} flex-1 pb-14 pt-24`}>
+      <div
+        className={`${STOREFRONT_CONTENT_FRAME} flex-1 pb-10 pt-8 sm:pb-14 sm:pt-16 lg:pt-24`}
+      >
         <div className="flex flex-col">
           {sections.map((section, index) => (
             <Fragment key={index}>

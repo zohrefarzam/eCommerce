@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import localFont from 'next/font/local';
+import { getLocaleConfig, getLocaleFromCookie, getMessages } from '@/i18n';
 import { Providers } from './providers';
 import './globals.css';
 
@@ -20,26 +22,37 @@ const iranSansX = localFont({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: 'هوشمندسازان | فروشگاه',
-  description: 'فروشگاه آنلاین محصولات دیجیتال',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const locale = getLocaleFromCookie(cookieStore);
+  const messages = getMessages(locale);
 
-export default function RootLayout({
+  return {
+    title: messages.meta.title,
+    description: messages.meta.description,
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const locale = getLocaleFromCookie(cookieStore);
+  const { lang, dir } = getLocaleConfig(locale);
+
   return (
     <html
-      lang="fa"
-      dir="rtl"
-      className={`light ${iranSansX.variable} h-full bg-background text-foreground antialiased`}
+      lang={lang}
+      dir={dir}
+      suppressHydrationWarning
+      className={`light ${iranSansX.variable} h-full overflow-x-hidden bg-background text-foreground antialiased`}
     >
       <body
-        className={`${iranSansX.className} min-h-full flex flex-col bg-background text-foreground`}
+        className={`${iranSansX.className} flex min-h-full min-w-0 flex-col overflow-x-hidden bg-background text-foreground`}
       >
-        <Providers>{children}</Providers>
+        <Providers locale={locale}>{children}</Providers>
       </body>
     </html>
   );

@@ -2,37 +2,50 @@
 
 import { useRef } from 'react';
 import { Icon } from '@iconify/react';
-import { browseCategories } from '@/landing/_content/landing';
+import { useLandingContent, useLocale } from '@/i18n';
 import { SectionHeader } from '@/landing/_components/ui/section-header';
 import { CategoryCard } from '@/landing/_components/ui/category-card';
 
 export function CategoryBrowse() {
+  const { browseCategories, categoryBrowse } = useLandingContent();
+  const { config } = useLocale();
   const scrollerRef = useRef<HTMLDivElement | null>(null);
 
   const scrollBy = (direction: 'prev' | 'next') => {
     const node = scrollerRef.current;
     if (!node) return;
     const amount = node.clientWidth * 0.8;
-    node.scrollBy({
-      left: direction === 'next' ? amount : -amount,
-      behavior: 'smooth',
-    });
+    const isRtl = config.dir === 'rtl';
+    const scrollLeft =
+      direction === 'next'
+        ? isRtl
+          ? -amount
+          : amount
+        : isRtl
+          ? amount
+          : -amount;
+    node.scrollBy({ left: scrollLeft, behavior: 'smooth' });
   };
+
+  const prevIcon =
+    config.dir === 'rtl' ? 'lucide:chevron-right' : 'lucide:chevron-left';
+  const nextIcon =
+    config.dir === 'rtl' ? 'lucide:chevron-left' : 'lucide:chevron-right';
 
   return (
     <section className="flex flex-col gap-6">
       <SectionHeader
-        title="مرور بر اساس دسته"
+        title={categoryBrowse.title}
         actions={
           <div className="flex items-center gap-2">
             <ScrollButton
-              direction="prev"
-              label="دسته قبلی"
+              icon={prevIcon}
+              label={categoryBrowse.prevLabel}
               onClick={() => scrollBy('prev')}
             />
             <ScrollButton
-              direction="next"
-              label="دسته بعدی"
+              icon={nextIcon}
+              label={categoryBrowse.nextLabel}
               onClick={() => scrollBy('next')}
             />
           </div>
@@ -56,11 +69,11 @@ export function CategoryBrowse() {
 }
 
 function ScrollButton({
-  direction,
+  icon,
   label,
   onClick,
 }: {
-  direction: 'prev' | 'next';
+  icon: string;
   label: string;
   onClick: () => void;
 }) {
@@ -71,14 +84,7 @@ function ScrollButton({
       onClick={onClick}
       className="flex size-9 items-center justify-center rounded-full text-foreground transition hover:bg-surface-secondary"
     >
-      <Icon
-        icon={
-          direction === 'next' ? 'lucide:chevron-left' : 'lucide:chevron-right'
-        }
-        width={20}
-        height={20}
-        aria-hidden
-      />
+      <Icon icon={icon} width={20} height={20} aria-hidden />
     </button>
   );
 }

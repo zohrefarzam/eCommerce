@@ -11,7 +11,7 @@ All images in `apps/frontend` must use the shared base component. Do not use `<i
 ## Required
 
 ```tsx
-import { Image } from "@/components/baseComponents/image";
+import { Image } from "@/components/ui/image";
 
 <div className="relative aspect-square">
   <Image
@@ -38,4 +38,4 @@ import { Image } from "@/components/baseComponents/image";
 import Image from "next/image";
 ```
 
-The only `<img>` in the project lives inside `baseComponents/image.tsx` for remote URLs.
+The only `<img>` in the project lives inside `components/ui/image.tsx` for remote URLs.

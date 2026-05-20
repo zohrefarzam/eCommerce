@@ -1,11 +1,11 @@
+'use client';
+
+import { useLandingContent } from '@/i18n';
 import { SectionHeader } from '@/landing/_components/ui/section-header';
 import { FeaturedCategoryCard } from '@/landing/_components/ui/featured-category-card';
-import {
-  newArrivalCategories,
-  newArrivalSection,
-} from '@/landing/_content/landing';
 
 export function NewArrival() {
+  const { newArrivalCategories, newArrivalSection } = useLandingContent();
   const [featured, wide, ...compact] = newArrivalCategories;
 
   return (

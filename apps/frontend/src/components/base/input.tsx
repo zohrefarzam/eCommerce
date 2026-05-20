@@ -22,7 +22,7 @@ export const Input = forwardRef<HTMLInputElement, BaseInputProps>(
     const defaultInputClassName =
       'w-full border-0 bg-transparent py-2.5 pe-3 ps-3 text-sm text-foreground shadow-none outline-none ring-0 transition placeholder:text-muted focus:ring-0';
     const defaultGroupClassName =
-      'w-full rounded-lg border border-transparent bg-surface-secondary shadow-none outline-none transition focus-within:ring-2 focus-within:ring-foreground/15';
+      'w-full rounded-lg border border-transparent bg-input-bg shadow-none outline-none transition hover:bg-input-bg-hover focus-within:bg-input-bg-hover focus-within:ring-2 focus-within:ring-foreground/12';
     const defaultAffixClassName =
       'border-0 bg-transparent px-3 text-muted [&_svg]:shrink-0';
 

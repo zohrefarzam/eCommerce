@@ -10,13 +10,18 @@ const globalPalette = {
 export const storefrontTheme = {
   colors: {
     ...globalPalette,
-    background: '#ffffff',
-    foreground: '#000000',
+    /** Page canvas — warm neutral, easier on the eyes than pure white */
+    background: '#f5f5f4',
+    foreground: '#1a1a1a',
     muted: '#717171',
+    /** Elevated panels and cards */
     surface: '#ffffff',
-    'surface-secondary': '#f5f5f5',
-    'surface-tertiary': '#ededed',
-    default: '#f5f5f5',
+    'surface-secondary': '#efefec',
+    'surface-tertiary': '#e4e3e1',
+    /** Search / text fields — soft gray, visible on page background */
+    'input-bg': '#ecebe8',
+    'input-bg-hover': '#e7e6e3',
+    default: '#efefec',
     'hero-bg': '#212121',
     'hero-fg': '#ffffff',
     'hero-fg-muted': 'rgb(255 255 255 / 0.72)',
@@ -62,6 +67,8 @@ export default {
           '--surface-foreground': colors.foreground,
           '--surface-secondary': colors['surface-secondary'],
           '--surface-tertiary': colors['surface-tertiary'],
+          '--input-bg': colors['input-bg'],
+          '--input-bg-hover': colors['input-bg-hover'],
           '--default': colors.default,
           '--default-foreground': colors.foreground,
           '--radius': radius,

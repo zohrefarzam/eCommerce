@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Image } from '@/components/baseComponents/image';
+import { Image } from '@/components/base/image';
 import type { ImageSource } from '@/lib/image-source';
 
 export type FeaturedCategoryCardVariant = 'featured' | 'wide' | 'compact';

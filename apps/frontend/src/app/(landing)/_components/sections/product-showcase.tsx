@@ -1,10 +1,11 @@
 'use client';
 
 import { Button } from '@heroui/react';
-import { ProductCard } from '@/components/baseComponents/ui/product-card';
-import type { ShowcaseProduct } from '@/landing/_content/landing';
+import { ProductCard } from '@/components/ui/product-card';
+import type { ShowcaseProduct } from '@/landing/_content/types';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
+import { useLocale } from '@/i18n';
 import { SectionHeader } from '@/landing/_components/ui/section-header';
 
 export type ProductShowcaseProps = {
@@ -21,22 +22,32 @@ export function ProductShowcase({
   title,
   products,
   viewAllHref,
-  viewAllLabel = 'مشاهده همه',
+  viewAllLabel = 'View all',
   onViewAll,
 }: ProductShowcaseProps) {
+  const { config } = useLocale();
+  const viewAllIcon =
+    config.dir === 'rtl' ? 'lucide:arrow-left' : 'lucide:arrow-right';
+
   const viewAllButton = (
     <Button
+      size="sm"
       onPress={onViewAll}
-      className="rounded-md px-8 py-3 font-medium"
       variant="outline"
+      className="h-8 min-h-8 gap-1 rounded-md px-2.5 text-[11px] font-medium sm:h-10 sm:min-h-10 sm:gap-1.5 sm:px-6 sm:text-sm"
     >
       {viewAllLabel}
-      <Icon icon="lucide:arrow-left" width={18} height={18} />
+      <Icon
+        icon={viewAllIcon}
+        width={14}
+        height={14}
+        className="sm:h-4 sm:w-4"
+      />
     </Button>
   );
 
   return (
-    <section className="flex flex-col gap-8" aria-label={title}>
+    <section className="flex flex-col gap-5 sm:gap-8" aria-label={title}>
       <SectionHeader
         eyebrow={eyebrow}
         title={title}
@@ -51,7 +62,7 @@ export function ProductShowcase({
         }
       />
 
-      <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-4 lg:grid-cols-4">
         {products.map((p) => (
           <ProductCard
             key={p.id}

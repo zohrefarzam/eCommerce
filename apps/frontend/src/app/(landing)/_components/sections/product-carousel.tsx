@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useRef, type CSSProperties } from 'react';
-import { Image } from '@/components/baseComponents/image';
+import { Image } from '@/components/base/image';
 import type { ImageSource } from '@/lib/image-source';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperClass } from 'swiper';
@@ -16,6 +16,8 @@ export type ProductCarouselImage = {
 
 type ProductCarouselSectionProps = {
   images?: ProductCarouselImage[];
+  /** Remount swiper when slides change (e.g. locale switch). */
+  carouselKey?: string;
 };
 
 const FALLBACK_CAROUSEL_IMAGES: ProductCarouselImage[] = [
@@ -26,28 +28,41 @@ const FALLBACK_CAROUSEL_IMAGES: ProductCarouselImage[] = [
 
 export function ProductCarouselSection({
   images,
+  carouselKey = 'default',
 }: ProductCarouselSectionProps) {
   const slides = useMemo(
     () => (images?.length ? images : FALLBACK_CAROUSEL_IMAGES),
     [images],
   );
 
+  const slidesKey = useMemo(
+    () =>
+      slides
+        .map((slide) =>
+          typeof slide.src === 'string' ? slide.src : slide.src.src,
+        )
+        .join('|'),
+    [slides],
+  );
+
   const swiperRef = useRef<SwiperClass | null>(null);
+  const enableLoop = slides.length > 2;
 
   return (
-    <section className="w-full bg-hero-bg">
-      <div className="group relative w-full py-0">
+    <section className="w-full min-w-0 max-w-full overflow-hidden bg-hero-bg">
+      <div className="group relative w-full min-w-0 py-0">
         <Swiper
+          key={`${carouselKey}-${slidesKey}`}
           modules={[Autoplay, Navigation, Pagination]}
           slidesPerView={1}
-          loop
+          loop={enableLoop}
           speed={700}
           pagination={{ clickable: true }}
           autoplay={{ delay: 3200, disableOnInteraction: false }}
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
           }}
-          className="product-swiper overflow-hidden border-y border-white/15 shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
+          className="product-swiper w-full max-w-full overflow-hidden border-y border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.25)] sm:shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
           style={
             {
               '--swiper-pagination-color': '#ffffff',
@@ -60,15 +75,17 @@ export function ProductCarouselSection({
             const key =
               typeof slide.src === 'string' ? slide.src : slide.src.src;
             return (
-              <SwiperSlide key={key}>
-                <div className="relative h-[560px]">
+              <SwiperSlide key={key} className="!w-full">
+                <div className="product-carousel-slide relative w-full overflow-hidden bg-hero-bg">
                   <Image
                     src={slide.src}
                     alt={slide.alt}
                     sizes="100vw"
+                    layout="responsive"
                     fit="cover"
                     quality={100}
                     priority={index === 0}
+                    className="!h-full !w-full"
                   />
                   <div
                     className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent"
@@ -127,8 +144,33 @@ export function ProductCarouselSection({
         </div>
       </div>
       <style>{`
+        .product-swiper {
+          width: 100%;
+          max-width: 100%;
+          height: auto !important;
+        }
+        .product-swiper .swiper-wrapper {
+          height: auto !important;
+        }
+        .product-swiper .swiper-slide {
+          width: 100% !important;
+          height: auto !important;
+        }
+        .product-carousel-slide img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+        }
+        .product-swiper .swiper-pagination {
+          bottom: 0.75rem !important;
+        }
         .product-swiper .swiper-pagination-bullet-active {
           background: #fff !important;
+        }
+        .product-carousel-slide {
+          aspect-ratio: 1440 / 520;
+          max-height: 520px;
         }
       `}</style>
     </section>

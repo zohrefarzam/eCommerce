@@ -1,0 +1,119 @@
+.media-card-carousel-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  /* 
+  padding: 1rem; */
+  background-color: var(--surface-secondary);
+  --outer-r: 1rem;
+  --p-distance: 0.75rem;
+}
+
+.media-card-carousel-track {
+  display: flex;
+  touch-action: pan-y;
+}
+
+.media-card-carousel-item {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  border-radius: calc(var(--outer-r) - var(--p-distance));
+  background-color: var(--hero-bg);
+  cursor: grab;
+}
+
+.media-card-carousel-item:active {
+  cursor: grabbing;
+}
+
+.media-card-carousel-item-media {
+  position: absolute;
+  inset: 0;
+}
+
+.media-card-carousel-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 38%,
+    rgb(0 0 0 / 0.12) 55%,
+    rgb(0 0 0 / 0.45) 72%,
+    rgb(0 0 0 / 0.72) 88%,
+    rgb(0 0 0 / 0.82) 100%
+  );
+  pointer-events: none;
+}
+
+.media-card-carousel-item-content {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1.25rem 1rem 1rem;
+  text-align: start;
+}
+
+.media-card-carousel-item-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: rgb(255 255 255 / 0.88);
+}
+
+.media-card-carousel-item-title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #fff;
+}
+
+.media-card-carousel-item-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.92);
+}
+
+.media-card-carousel-indicators-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.media-card-carousel-indicators {
+  margin-top: 0.875rem;
+  display: flex;
+  width: min(100%, 9.5rem);
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.media-card-carousel-indicator {
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.media-card-carousel-indicator.active {
+  background-color: var(--foreground);
+}
+
+.media-card-carousel-indicator.inactive {
+  background-color: color-mix(in srgb, var(--foreground) 25%, transparent);
+}

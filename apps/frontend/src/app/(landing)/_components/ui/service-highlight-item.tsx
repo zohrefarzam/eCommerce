@@ -12,26 +12,26 @@ export function ServiceHighlightItem({
   description,
 }: ServiceHighlightItemProps) {
   return (
-    <article className="flex flex-col items-center gap-6 text-center">
+    <article className="flex flex-col items-center gap-3 text-center sm:gap-6">
       <div
-        className="flex size-20 shrink-0 items-center justify-center rounded-full bg-surface-secondary"
+        className="flex size-14 shrink-0 items-center justify-center rounded-full bg-surface-tertiary sm:size-20"
         aria-hidden
       >
-        <div className="flex size-14 items-center justify-center rounded-full bg-foreground">
+        <div className="flex size-10 items-center justify-center rounded-full bg-foreground sm:size-14">
           <Icon
             icon={icon}
-            width={26}
-            height={26}
-            className="text-background"
+            className="size-5 text-background sm:size-[26px]"
             aria-hidden
           />
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <h3 className="text-base font-bold tracking-wide text-foreground sm:text-lg">
+      <div className="flex flex-col gap-1 sm:gap-2">
+        <h3 className="text-sm font-bold tracking-wide text-foreground sm:text-lg">
           {title}
         </h3>
-        <p className="text-sm leading-relaxed text-muted">{description}</p>
+        <p className="text-xs leading-relaxed text-muted sm:text-sm">
+          {description}
+        </p>
       </div>
     </article>
   );

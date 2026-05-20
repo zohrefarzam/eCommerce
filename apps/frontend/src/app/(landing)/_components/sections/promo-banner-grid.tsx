@@ -1,9 +1,11 @@
 'use client';
 
 import { Button } from '@heroui/react';
-import { promoBanners } from '@/landing/_content/landing';
+import { useLandingContent } from '@/i18n';
 
 export function PromoBannerGrid() {
+  const { promoBanners } = useLandingContent();
+
   return (
     <section className="grid gap-4 md:grid-cols-2">
       {promoBanners.map((banner) => {
