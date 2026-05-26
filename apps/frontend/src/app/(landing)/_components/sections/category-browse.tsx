@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 import { useLandingContent, useLocale } from '@/i18n';
 import { SectionHeader } from '@/landing/_components/ui/section-header';
 import { CategoryCard } from '@/landing/_components/ui/category-card';
+import { productsCategoryHref } from '@/lib/product-catalog';
 
 export function CategoryBrowse() {
   const { browseCategories, categoryBrowse } = useLandingContent();
@@ -58,7 +59,7 @@ export function CategoryBrowse() {
         {browseCategories.map((cat) => (
           <CategoryCard
             key={cat.slug}
-            href={`/category/${cat.slug}`}
+            href={productsCategoryHref(cat.slug)}
             label={cat.label}
             icon={cat.icon}
           />

@@ -7,6 +7,7 @@ import { Button as HeroUIButton } from '@heroui/react';
 import { Icon } from '@iconify/react';
 import { Button } from '@/components/base/button';
 import { useLandingContent, useLocale } from '@/i18n';
+import { useRemountOnReturn } from '@/lib/use-remount-on-return';
 import CardSwap, { Card } from '@/components/ui/card-swap/CardSwap';
 import {
   MediaCardCarousel,
@@ -118,12 +119,13 @@ function MobilePromotionCarousel() {
 export function PromotionShowcase() {
   const { cardSwapPromos, cardSwapSection } = useLandingContent();
   const { config } = useLocale();
+  const returnKey = useRemountOnReturn('/');
 
   return (
     <section aria-label={cardSwapSection.ariaLabel}>
       <div className="flex flex-col gap-4 overflow-hidden rounded-2xl border border-foreground/5 bg-surface-secondary p-4 md:hidden">
         <PromotionShowcaseCopy compact />
-        <MobilePromotionCarousel />
+        <MobilePromotionCarousel key={returnKey} />
       </div>
 
       <div className="hidden min-h-[320px] overflow-hidden rounded-2xl border border-foreground/5 bg-surface-secondary md:grid lg:min-h-[340px] lg:grid-cols-[minmax(0,1fr)_minmax(240px,42%)]">
@@ -133,6 +135,7 @@ export function PromotionShowcase() {
 
         <div className="card-swap-stage flex min-h-[280px] items-end lg:min-h-full">
           <CardSwap
+            key={returnKey}
             rtl={config.dir === 'rtl'}
             width={340}
             height={300}

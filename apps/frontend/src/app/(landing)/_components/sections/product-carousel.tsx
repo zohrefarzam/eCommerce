@@ -1,8 +1,9 @@
 'use client';
 
-import { useMemo, useRef, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, type CSSProperties } from 'react';
 import { Image } from '@/components/base/image';
 import type { ImageSource } from '@/lib/image-source';
+import { useRemountOnReturn } from '@/lib/use-remount-on-return';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperClass } from 'swiper';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
@@ -30,6 +31,7 @@ export function ProductCarouselSection({
   images,
   carouselKey = 'default',
 }: ProductCarouselSectionProps) {
+  const returnKey = useRemountOnReturn('/');
   const slides = useMemo(
     () => (images?.length ? images : FALLBACK_CAROUSEL_IMAGES),
     [images],
@@ -48,11 +50,18 @@ export function ProductCarouselSection({
   const swiperRef = useRef<SwiperClass | null>(null);
   const enableLoop = slides.length > 2;
 
+  useEffect(() => {
+    return () => {
+      swiperRef.current?.destroy(true, true);
+      swiperRef.current = null;
+    };
+  }, []);
+
   return (
     <section className="w-full min-w-0 max-w-full overflow-hidden bg-hero-bg">
       <div className="group relative w-full min-w-0 py-0">
         <Swiper
-          key={`${carouselKey}-${slidesKey}`}
+          key={`${carouselKey}-${slidesKey}-${returnKey}`}
           modules={[Autoplay, Navigation, Pagination]}
           slidesPerView={1}
           loop={enableLoop}

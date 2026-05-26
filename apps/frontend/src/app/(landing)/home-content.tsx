@@ -12,6 +12,7 @@ import { ServiceHighlights } from '@/landing/_components/sections/service-highli
 import { ProductShowcase } from '@/landing/_components/sections/product-showcase';
 import { useLandingContent, useLocale } from '@/i18n';
 import { getCarouselBanners } from '@/landing/_content/carousel-banners';
+import { productsTabHref } from '@/lib/product-catalog';
 
 export function HomeContent() {
   const { locale } = useLocale();
@@ -34,7 +35,7 @@ export function HomeContent() {
           eyebrow={landing.home.newProductsEyebrow}
           title={landing.home.newProductsTitle}
           products={landing.productsByTab.new.slice(0, 4)}
-          viewAllHref="/products"
+          viewAllHref={productsTabHref('new')}
           viewAllLabel={landing.home.viewAll}
         />
         <PromotionShowcase />
@@ -43,7 +44,7 @@ export function HomeContent() {
           eyebrow={landing.home.bestsellersEyebrow}
           title={landing.home.bestsellersTitle}
           products={landing.productsByTab.bestseller.slice(0, 4)}
-          viewAllHref="/products"
+          viewAllHref={productsTabHref('bestseller')}
           viewAllLabel={landing.home.viewAll}
         />
         <NewArrival />

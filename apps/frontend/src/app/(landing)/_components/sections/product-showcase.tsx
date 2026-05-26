@@ -1,7 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Button } from '@heroui/react';
 import { ProductCard } from '@/components/ui/product-card';
+import { addShowcaseProductToCart } from '@/lib/cart-store';
+import { productDetailHref } from '@/lib/product-detail';
 import type { ShowcaseProduct } from '@/landing/_content/types';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
@@ -25,6 +28,7 @@ export function ProductShowcase({
   viewAllLabel = 'View all',
   onViewAll,
 }: ProductShowcaseProps) {
+  const router = useRouter();
   const { config } = useLocale();
   const viewAllIcon =
     config.dir === 'rtl' ? 'lucide:arrow-left' : 'lucide:arrow-right';
@@ -73,6 +77,8 @@ export function ProductShowcase({
             image={p.image}
             imageAlt={p.imageAlt}
             defaultFavorite={p.defaultFavorite}
+            onView={() => router.push(productDetailHref(p.id))}
+            onBuy={() => addShowcaseProductToCart(p)}
           />
         ))}
       </div>

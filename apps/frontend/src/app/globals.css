@@ -1,3 +1,28 @@
 @config "../../tailwind.config.ts";
 
-@import "@heroui/styles";
+@import '@heroui/styles';
+
+/* Cart preview: suppress HeroUI focus ring (blue border) on open */
+.cart-dropdown-trigger[data-focus-visible='true'],
+.cart-dropdown-trigger:focus-visible {
+  --tw-ring-shadow: 0 0 #0000;
+  box-shadow: none;
+  outline: none;
+}
+
+.cart-dropdown-popover,
+.cart-dropdown-popover[data-focus-visible='true'],
+.cart-dropdown-popover:focus-visible {
+  --tw-ring-shadow: 0 0 #0000;
+  outline: none;
+}
+
+/* Checkout radios: prevent HeroUI default indicator bleed */
+.radio [data-slot='radio-indicator']::before {
+  display: none !important;
+  content: none !important;
+}
+
+.radio [data-slot='radio-control'] {
+  border-radius: 9999px !important;
+}

@@ -284,7 +284,7 @@ export const enLandingContent: LandingContent = {
     title: 'Special offers',
     description: 'See the next deal every few seconds.',
     cta: 'View all',
-    href: '/products',
+    href: '/products?tab=featured',
     ariaLabel: 'Special offers',
   },
   cardSwapPromos: [

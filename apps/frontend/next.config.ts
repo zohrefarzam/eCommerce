@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         hostname: 'images.unsplash.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',
+        pathname: '/**',
+      },
     ],
     qualities: [100, 90, 75],
     formats: ['image/avif', 'image/webp'],

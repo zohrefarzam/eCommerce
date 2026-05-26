@@ -3,6 +3,7 @@
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { useLandingContent } from '@/i18n';
+import { productsCategoryHref } from '@/lib/product-catalog';
 import { STOREFRONT_CONTENT_FRAME } from '@/lib/storefront-layout';
 
 const categoryIconBySlug: Record<string, string> = {
@@ -31,7 +32,7 @@ export function CategoryNavBar() {
           return (
             <Link
               key={item.slug}
-              href={`/category/${item.slug}`}
+              href={productsCategoryHref(item.slug)}
               prefetch={false}
               aria-label={item.label}
               className={`flex flex-1 basis-0 items-center border-s border-white/15 px-2 py-2.5 transition hover:bg-white/10 sm:min-w-0 sm:flex-row sm:gap-2 sm:py-2 ${

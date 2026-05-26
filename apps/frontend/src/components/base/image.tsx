@@ -2,6 +2,7 @@ import NextImage from 'next/image';
 import {
   capSizesToIntrinsicWidth,
   isRemoteImageUrl,
+  sharpenRemoteImageUrl,
   type ImageSource,
 } from '@/lib/image-source';
 
@@ -50,6 +51,7 @@ export function Image({
   const remote = isRemoteImageUrl(src);
   const fitClass = fitClasses[fit];
   const resolvedSizes = capSizesToIntrinsicWidth(sizes, src);
+  const remoteSrc = remote ? sharpenRemoteImageUrl(src as string) : '';
 
   if (layout === 'responsive') {
     const responsiveClassName = cx('h-auto w-full max-w-full', className);
@@ -58,9 +60,10 @@ export function Image({
       return (
         // eslint-disable-next-line @next/next/no-img-element -- encapsulated; do not use <img> elsewhere
         <img
-          src={src}
+          src={remoteSrc}
           alt={alt}
           loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
           decoding="async"
           className={responsiveClassName}
         />
@@ -81,6 +84,21 @@ export function Image({
         />
       );
     }
+
+    if (typeof src === 'string' && src.length > 0) {
+      return (
+        <NextImage
+          src={src}
+          alt={alt}
+          width={1200}
+          height={1200}
+          sizes={resolvedSizes}
+          quality={quality}
+          priority={priority}
+          className={responsiveClassName}
+        />
+      );
+    }
   }
 
   const mergedClassName = cx(fitClass, className);
@@ -89,9 +107,10 @@ export function Image({
     return (
       // eslint-disable-next-line @next/next/no-img-element -- encapsulated; do not use <img> elsewhere
       <img
-        src={src}
+        src={remoteSrc}
         alt={alt}
         loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
         decoding="async"
         className={cx('absolute inset-0 size-full', mergedClassName)}
       />

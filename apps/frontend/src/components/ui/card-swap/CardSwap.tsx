@@ -120,14 +120,15 @@ export default function CardSwap({
 
   useEffect(() => {
     const total = refs.length;
-    refs.forEach((r, i) =>
+    refs.forEach((r, i) => {
+      if (!r.current) return;
       placeNow(
-        r.current!,
+        r.current,
         makeSlot(i, cardDistance, verticalDistance, total),
         skewAmount,
         rtl,
-      ),
-    );
+      );
+    });
 
     const swap = () => {
       if (order.current.length < 2) return;
@@ -198,9 +199,20 @@ export default function CardSwap({
     swap();
     intervalRef.current = window.setInterval(swap, delay);
 
+    const cleanupGsap = () => {
+      clearInterval(intervalRef.current);
+      tlRef.current?.kill();
+      tlRef.current = null;
+      refs.forEach((r) => {
+        if (!r.current) return;
+        gsap.killTweensOf(r.current);
+        gsap.set(r.current, { clearProps: 'transform' });
+      });
+    };
+
     if (pauseOnHover) {
       const node = container.current;
-      if (!node) return () => clearInterval(intervalRef.current);
+      if (!node) return cleanupGsap;
 
       const pause = () => {
         tlRef.current?.pause();
@@ -215,10 +227,10 @@ export default function CardSwap({
       return () => {
         node.removeEventListener('mouseenter', pause);
         node.removeEventListener('mouseleave', resume);
-        clearInterval(intervalRef.current);
+        cleanupGsap();
       };
     }
-    return () => clearInterval(intervalRef.current);
+    return cleanupGsap;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     cardDistance,

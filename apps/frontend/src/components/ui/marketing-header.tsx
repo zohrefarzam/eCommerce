@@ -3,6 +3,7 @@
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { Input } from '@/components/base/input';
+import { CartNavDropdown } from '@/components/ui/cart-nav-dropdown';
 import { LanguageSwitch } from '@/components/ui/language-switch';
 import { useLocale } from '@/i18n';
 import { STOREFRONT_CONTENT_FRAME } from '@/lib/storefront-layout';
@@ -76,15 +77,7 @@ function HeaderActions({ className }: { className?: string }) {
           aria-hidden
         />
       </IconButton>
-      <IconButton label={messages.header.cart}>
-        <Icon
-          icon="lucide:shopping-cart"
-          width={22}
-          height={22}
-          className={iconNav}
-          aria-hidden
-        />
-      </IconButton>
+      <CartNavDropdown />
       <IconButton label={messages.header.account}>
         <Icon
           icon="lucide:user"

@@ -80,7 +80,7 @@ export const faLandingContent: LandingContent = {
   productTabs: [
     { id: 'new', label: 'جدیدترین‌ها' },
     { id: 'bestseller', label: 'پرفروش‌ها' },
-    { id: 'featured', label: 'منتخب' },
+    { id: 'featured', label: 'پیشنهادهای ویژه' },
   ],
   productsByTab: {
     new: [
@@ -283,7 +283,7 @@ export const faLandingContent: LandingContent = {
     title: 'پیشنهادهای ویژه',
     description: 'هر چند ثانیه پیشنهاد بعدی را ببینید.',
     cta: 'مشاهده همه',
-    href: '/products',
+    href: '/products?tab=featured',
     ariaLabel: 'پیشنهادهای ویژه',
   },
   cardSwapPromos: [

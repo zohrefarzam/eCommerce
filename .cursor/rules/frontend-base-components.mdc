@@ -1,0 +1,56 @@
+---
+description: Use base components from @/components/base — never raw HTML form/interactive tags
+globs: apps/frontend/**/*.{tsx,ts}
+alwaysApply: false
+---
+
+# Frontend base components
+
+All form controls and interactive elements in `apps/frontend` must use the project's base components under `@/components/base/*`. These wrap HeroUI primitives and apply the storefront design tokens (`foreground`, `muted`, `input-bg`, etc.) for visual + RTL consistency.
+
+## Required imports
+
+```tsx
+import { Button } from "@/components/base/button";
+import { Checkbox } from "@/components/base/checkbox";
+import { Input } from "@/components/base/input";
+import { Select } from "@/components/base/select";
+import { Modal } from "@/components/base/modal";
+```
+
+## Forbidden in app / section / page code
+
+```tsx
+// Native HTML form/interactive tags
+<button>…</button>
+<input … />
+<select>…</select>
+<textarea … />
+
+// Direct HeroUI imports
+import { Button, Input, Checkbox, Select } from "@heroui/react";
+```
+
+## Correct usage
+
+```tsx
+<Button variant="primary" fullWidth onPress={onSubmit}>Save</Button>
+
+<Input type="search" value={q} onChange={(e) => setQ(e.target.value)} />
+
+<Checkbox isSelected={checked} onChange={setChecked}>Label</Checkbox>
+
+<Select
+  options={[{ id: 'rating', label: 'Top rated' }]}
+  selectedKey={sort}
+  onSelectionChange={setSort}
+/>
+```
+
+## Missing a control?
+
+If you need something not yet in `@/components/base/*` (radio, switch, etc.), add a new base proxy file that wraps the HeroUI primitive with project tokens — match the pattern in `button.tsx` / `input.tsx` / `checkbox.tsx` / `select.tsx`. Do not reach for the raw HTML element or import HeroUI directly in app code.
+
+## Exception
+
+The only place allowed to render the raw HeroUI / HTML primitives is the base proxy files themselves (`apps/frontend/src/components/base/*.tsx`).
