@@ -12,6 +12,8 @@ export type CheckoutAddress = {
   street: string;
   postalCode: string;
   phone: string;
+  latitude?: number;
+  longitude?: number;
 };
 
 export type CheckoutAddressInput = Omit<CheckoutAddress, 'id'>;
@@ -116,39 +118,105 @@ export function formatAddressOneLine(
     : formatAddressLineEn(address);
 }
 
+export type ScheduledDateOption = {
+  id: string;
+  dayLabel: string;
+  dateLabel: string;
+  feeLabel: string;
+};
+
+export type DeliveryTimeSlot = {
+  id: string;
+  label: string;
+};
+
 /** Digikala-style delivery windows for scheduled shipping. */
-export function getDeliveryTimeSlots(
-  locale: Locale,
-): { id: string; label: string }[] {
+export function getDeliveryTimeSlots(locale: Locale): DeliveryTimeSlot[] {
   if (locale === 'fa') {
-    return [
-      { id: 'sat-am', label: 'شنبه ۹ تا ۱۳' },
-      { id: 'sat-pm', label: 'شنبه ۱۶ تا ۲۰' },
-      { id: 'sun-am', label: 'یکشنبه ۹ تا ۱۳' },
-      { id: 'sun-pm', label: 'یکشنبه ۱۶ تا ۲۰' },
-    ];
+    return [{ id: '9-21', label: 'ساعت ۹ تا ۲۱' }];
   }
   return [
-    { id: 'mon-am', label: 'Mon 9 AM – 1 PM' },
-    { id: 'mon-pm', label: 'Mon 4 PM – 8 PM' },
-    { id: 'tue-am', label: 'Tue 9 AM – 1 PM' },
-    { id: 'tue-pm', label: 'Tue 4 PM – 8 PM' },
+    { id: '9-21', label: '9 AM – 9 PM' },
+    { id: '9-13', label: '9 AM – 1 PM' },
+    { id: '16-20', label: '4 PM – 8 PM' },
   ];
 }
 
-export function getScheduledDateOptions(
-  locale: Locale,
-): { id: string; label: string }[] {
+export function getScheduledDateOptions(locale: Locale): ScheduledDateOption[] {
   if (locale === 'fa') {
     return [
-      { id: '1404-08-05', label: '۵ آبان ۱۴۰۴' },
-      { id: '1404-08-06', label: '۶ آبان ۱۴۰۴' },
-      { id: '1404-08-07', label: '۷ آبان ۱۴۰۴' },
+      {
+        id: '1404-03-09',
+        dayLabel: 'شنبه',
+        dateLabel: '۹ خرداد',
+        feeLabel: '۲۰۰,۰۰۰ تومان',
+      },
+      {
+        id: '1404-03-10',
+        dayLabel: 'یکشنبه',
+        dateLabel: '۱۰ خرداد',
+        feeLabel: '۲۰۰,۰۰۰ تومان',
+      },
+      {
+        id: '1404-03-11',
+        dayLabel: 'دوشنبه',
+        dateLabel: '۱۱ خرداد',
+        feeLabel: 'رایگان',
+      },
+      {
+        id: '1404-03-12',
+        dayLabel: 'سه‌شنبه',
+        dateLabel: '۱۲ خرداد',
+        feeLabel: 'رایگان',
+      },
+      {
+        id: '1404-03-13',
+        dayLabel: 'چهارشنبه',
+        dateLabel: '۱۳ خرداد',
+        feeLabel: '۲۰۰,۰۰۰ تومان',
+      },
+      {
+        id: '1404-03-14',
+        dayLabel: 'پنج‌شنبه',
+        dateLabel: '۱۴ خرداد',
+        feeLabel: '۲۰۰,۰۰۰ تومان',
+      },
+      {
+        id: '1404-03-15',
+        dayLabel: 'جمعه',
+        dateLabel: '۱۵ خرداد',
+        feeLabel: '۲۰۰,۰۰۰ تومان',
+      },
     ];
   }
   return [
-    { id: '2026-05-28', label: '28 May 2026' },
-    { id: '2026-05-29', label: '29 May 2026' },
-    { id: '2026-05-30', label: '30 May 2026' },
+    {
+      id: '2026-05-28',
+      dayLabel: 'Wed',
+      dateLabel: '28 May',
+      feeLabel: 'Free',
+    },
+    {
+      id: '2026-05-29',
+      dayLabel: 'Thu',
+      dateLabel: '29 May',
+      feeLabel: '$5',
+    },
+    {
+      id: '2026-05-30',
+      dayLabel: 'Fri',
+      dateLabel: '30 May',
+      feeLabel: '$5',
+    },
   ];
+}
+
+/** Legacy single-line label for summaries and payment review. */
+export function getScheduledDateLabel(
+  locale: Locale,
+  dateId: string,
+): string | undefined {
+  const option = getScheduledDateOptions(locale).find((d) => d.id === dateId);
+  if (!option) return undefined;
+  return `${option.dayLabel} ${option.dateLabel}`;
 }

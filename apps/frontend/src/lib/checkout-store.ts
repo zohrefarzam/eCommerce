@@ -75,20 +75,34 @@ export function hasValidSelectedAddress(
   );
 }
 
-export function isShippingStepComplete(
+export function isAddressStepComplete(
   state: Pick<
     CheckoutProgressState,
-    'shippingMethodId' | 'scheduledDeliveryDate'
+    'addresses' | 'selectedAddressId' | 'scheduledDeliveryDate'
   >,
 ): boolean {
-  if (state.shippingMethodId !== 'scheduled') return true;
-  return state.scheduledDeliveryDate?.includes('|') ?? false;
+  return (
+    hasValidSelectedAddress(state) &&
+    (state.scheduledDeliveryDate?.includes('|') ?? false)
+  );
+}
+
+export function isShippingStepComplete(
+  state: Pick<CheckoutProgressState, 'shippingMethodId'>,
+): boolean {
+  return (
+    state.shippingMethodId === 'free' || state.shippingMethodId === 'express'
+  );
+}
+
+export function isCheckoutComplete(state: CheckoutProgressState): boolean {
+  return isAddressStepComplete(state) && isShippingStepComplete(state);
 }
 
 export function getMaxAllowedCheckoutStep(
   state: CheckoutProgressState,
 ): CheckoutStep {
-  if (!hasValidSelectedAddress(state)) return 1;
+  if (!isAddressStepComplete(state)) return 1;
   if (!isShippingStepComplete(state)) return 2;
   return 3;
 }
@@ -127,7 +141,7 @@ function createInitialState(locale: Locale = 'fa') {
     step: 1 as CheckoutStep,
     addresses,
     selectedAddressId: addresses[0]?.id ?? null,
-    shippingMethodId: 'free' as ShippingMethodId,
+    shippingMethodId: 'scheduled' as ShippingMethodId,
     scheduledDeliveryDate: null as string | null,
     paymentMethodId: (locale === 'fa' ? 'online' : 'card') as PaymentMethodId,
     payment: { ...defaultPayment },
@@ -183,16 +197,8 @@ export const useCheckoutStore = create<CheckoutState>()(
         });
       },
 
-      setShippingMethodId: (id, locale?: Locale) => {
-        const scheduledDeliveryDate =
-          id === 'scheduled'
-            ? get().scheduledDeliveryDate?.includes('|')
-              ? get().scheduledDeliveryDate
-              : locale
-                ? getDefaultScheduledDeliveryDate(locale)
-                : null
-            : null;
-        set({ shippingMethodId: id, scheduledDeliveryDate });
+      setShippingMethodId: (id, _locale?: Locale) => {
+        set({ shippingMethodId: id });
       },
 
       setScheduledDeliveryDate: (date) => set({ scheduledDeliveryDate: date }),

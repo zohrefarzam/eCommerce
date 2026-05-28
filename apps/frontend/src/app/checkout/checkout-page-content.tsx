@@ -11,12 +11,12 @@ import { useLocale } from '@/i18n';
 import { useCartStore } from '@/lib/cart-store';
 import {
   getDeliveryTimeSlots,
+  getScheduledDateLabel,
   getScheduledDateOptions,
 } from '@/lib/checkout-data';
 import {
   clampCheckoutStep,
-  hasValidSelectedAddress,
-  isShippingStepComplete,
+  isCheckoutComplete,
   selectSelectedAddress,
   useCheckoutStore,
   type CheckoutStep,
@@ -91,6 +91,24 @@ export function CheckoutPageContent() {
   }, [addresses, syncSelectedAddress]);
 
   useEffect(() => {
+    if (!scheduledDeliveryDate?.includes('|')) return;
+    const [dateId, slotId] = scheduledDeliveryDate.split('|');
+    const dateValid = getScheduledDateOptions(locale).some(
+      (d) => d.id === dateId,
+    );
+    const slotValid = getDeliveryTimeSlots(locale).some((s) => s.id === slotId);
+    if (!dateValid || !slotValid) {
+      setScheduledDeliveryDate(null);
+    }
+  }, [locale, scheduledDeliveryDate, setScheduledDeliveryDate]);
+
+  useEffect(() => {
+    if (step === 2 && shippingMethodId === 'scheduled') {
+      setShippingMethodId('free', locale);
+    }
+  }, [step, shippingMethodId, locale, setShippingMethodId]);
+
+  useEffect(() => {
     const requested = parseStep(searchParams.get('step'));
     const clamped = clampCheckoutStep(requested, progressState);
     setStep(clamped);
@@ -120,24 +138,22 @@ export function CheckoutPageContent() {
   );
 
   const shippingLabel = useMemo(() => {
-    if (shippingMethodId === 'free') return labels.shippingFree;
-    if (shippingMethodId === 'express') return labels.shippingExpress;
-    if (!scheduledDeliveryDate) return labels.shippingScheduled;
+    const methodLabel =
+      shippingMethodId === 'express'
+        ? labels.shippingExpress
+        : labels.shippingFree;
+    if (!scheduledDeliveryDate?.includes('|')) return methodLabel;
     const [dateId, slotId] = scheduledDeliveryDate.split('|');
-    const dateLabel = getScheduledDateOptions(locale).find(
-      (d) => d.id === dateId,
-    )?.label;
+    const dateLabel = dateId
+      ? getScheduledDateLabel(locale, dateId)
+      : undefined;
     const slotLabel = getDeliveryTimeSlots(locale).find(
       (s) => s.id === slotId,
     )?.label;
-    return [labels.shippingScheduled, dateLabel, slotLabel]
-      .filter(Boolean)
-      .join(' · ');
+    return [methodLabel, dateLabel, slotLabel].filter(Boolean).join(' · ');
   }, [shippingMethodId, scheduledDeliveryDate, labels, locale]);
 
-  const canCompleteCheckout =
-    hasValidSelectedAddress(progressState) &&
-    isShippingStepComplete(progressState);
+  const canCompleteCheckout = isCheckoutComplete(progressState);
 
   const handlePay = () => {
     if (!canCompleteCheckout || !selectedAddress) return;
@@ -205,6 +221,8 @@ export function CheckoutPageContent() {
               onAdd={addAddress}
               onUpdate={updateAddress}
               onRemove={removeAddress}
+              scheduledDeliveryDate={scheduledDeliveryDate}
+              onSelectDate={setScheduledDeliveryDate}
               onNext={() => goToStep(2)}
             />
           ) : null}
@@ -214,10 +232,11 @@ export function CheckoutPageContent() {
               locale={locale}
               labels={labels}
               shippingMethodId={shippingMethodId}
-              scheduledDeliveryDate={scheduledDeliveryDate}
               onSelectMethod={handleSelectShippingMethod}
-              onSelectDate={setScheduledDeliveryDate}
-              onBack={() => goToStep(1)}
+              onBack={() => {
+                setShippingMethodId('scheduled', locale);
+                goToStep(1);
+              }}
               onNext={() => goToStep(3)}
             />
           ) : null}

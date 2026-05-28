@@ -125,6 +125,23 @@ export type Messages = {
     taxLabel: string;
     shippingLabel: string;
     totalLabel: string;
+    deliveryToSelectedAddress: string;
+    changeAddress: string;
+    sellerShipment: string;
+    quantityShort: string;
+    deliveryNotSelected: string;
+    sellerShipmentNote: string;
+    selectAddressModalTitle: string;
+    mapPickerTitle: string;
+    mapPickerHint: string;
+    saveMapLocation: string;
+    enterAddressManually: string;
+    selectLocationOnMap: string;
+    addressDetailHint: string;
+    plaque: string;
+    unit: string;
+    confirmAndContinue: string;
+    noCityOptions: string;
   };
   productsListing: {
     allEyebrow: string;
@@ -291,6 +308,26 @@ const fa: Messages = {
     taxLabel: 'مالیات',
     shippingLabel: 'هزینه ارسال',
     totalLabel: 'مبلغ قابل پرداخت',
+    deliveryToSelectedAddress: 'ارسال به آدرس انتخاب شده',
+    changeAddress: 'تغییر آدرس',
+    sellerShipment: 'ارسال فروشنده',
+    quantityShort: 'تعداد',
+    deliveryNotSelected: 'زمان انتخاب نشده',
+    sellerShipmentNote:
+      'کالاهای این مرسوله به صورت مستقیم توسط فروشنده مورد نظر برای شما ارسال خواهد شد.',
+    selectAddressModalTitle: 'انتخاب آدرس',
+    mapPickerTitle: 'انتخاب موقعیت مکانی',
+    mapPickerHint:
+      'ابتدا موقعیت را از روی نقشه مشخص کنید. با کلیک روی نقشه، پین جابه‌جا می‌شود.',
+    saveMapLocation: 'ثبت موقعیت مکانی',
+    enterAddressManually: 'ثبت دستی آدرس',
+    selectLocationOnMap: 'انتخاب موقعیت مکانی روی نقشه',
+    addressDetailHint:
+      'برای ارسال بهتر، آدرس را دقیق و با نشانه‌های قابل تشخیص بنویسید.',
+    plaque: 'پلاک',
+    unit: 'واحد',
+    confirmAndContinue: 'تایید و ادامه',
+    noCityOptions: 'بدون گزینه',
   },
   productsListing: {
     allEyebrow: 'فروشگاه',
@@ -463,6 +500,25 @@ const en: Messages = {
     taxLabel: 'Estimated Tax',
     shippingLabel: 'Estimated shipping & Handling',
     totalLabel: 'Total',
+    deliveryToSelectedAddress: 'Ship to selected address',
+    changeAddress: 'Change address',
+    sellerShipment: 'Seller shipment',
+    quantityShort: 'Qty',
+    deliveryNotSelected: 'No delivery time selected',
+    sellerShipmentNote:
+      'Items in this shipment will be sent directly to you by the seller.',
+    selectAddressModalTitle: 'Select address',
+    mapPickerTitle: 'Pick location on map',
+    mapPickerHint: 'Click the map to move the pin to your delivery location.',
+    saveMapLocation: 'Confirm map location',
+    enterAddressManually: 'Enter address manually',
+    selectLocationOnMap: 'Pick location on map',
+    addressDetailHint:
+      'Use a clear, recognizable address to help with delivery.',
+    plaque: 'Building no.',
+    unit: 'Unit',
+    confirmAndContinue: 'Confirm and continue',
+    noCityOptions: 'No options',
   },
   productsListing: {
     allEyebrow: 'Store',

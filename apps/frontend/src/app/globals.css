@@ -1,6 +1,7 @@
 @config "../../tailwind.config.ts";
 
 @import '@heroui/styles';
+@import 'leaflet/dist/leaflet.css';
 
 /* Cart preview: suppress HeroUI focus ring (blue border) on open */
 .cart-dropdown-trigger[data-focus-visible='true'],
