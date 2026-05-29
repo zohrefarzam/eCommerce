@@ -2,6 +2,7 @@
 
 import { I18nProvider } from '@heroui/react';
 import { LocaleProvider, useLocale, type Locale } from '@/i18n';
+import { AuthProvider } from '@/providers/auth-provider';
 
 type ProvidersProps = {
   children: React.ReactNode;
@@ -16,7 +17,9 @@ function HeroUiLocaleBridge({ children }: { children: React.ReactNode }) {
 export function Providers({ children, locale }: ProvidersProps) {
   return (
     <LocaleProvider initialLocale={locale}>
-      <HeroUiLocaleBridge>{children}</HeroUiLocaleBridge>
+      <AuthProvider>
+        <HeroUiLocaleBridge>{children}</HeroUiLocaleBridge>
+      </AuthProvider>
     </LocaleProvider>
   );
 }

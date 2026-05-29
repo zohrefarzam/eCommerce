@@ -9,6 +9,7 @@ import { SiteFooter } from '@/landing/_components/layout/site-footer';
 import { SiteShell } from '@/landing/_components/layout/site-shell';
 import { useLocale } from '@/i18n';
 import { useCartStore } from '@/lib/cart-store';
+import { useAuth } from '@/providers/auth-provider';
 import {
   getDeliveryTimeSlots,
   getScheduledDateLabel,
@@ -42,6 +43,7 @@ export function CheckoutPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { messages, locale } = useLocale();
+  const { isAuthenticated, isReady } = useAuth();
   const labels = messages.checkout;
   const cartItems = useCartStore((s) => s.items);
 
@@ -81,6 +83,18 @@ export function CheckoutPageContent() {
     [addresses, selectedAddressId, shippingMethodId, scheduledDeliveryDate],
   );
 
+  const returnUrl = useMemo(() => {
+    const query = searchParams.toString();
+    return query ? `/checkout?${query}` : '/checkout';
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!isReady) return;
+    if (!isAuthenticated) {
+      router.replace(`/login?returnUrl=${encodeURIComponent(returnUrl)}`);
+    }
+  }, [isReady, isAuthenticated, returnUrl, router]);
+
   useEffect(() => {
     hydrateDefaults(locale);
     syncSelectedAddress();
@@ -109,6 +123,7 @@ export function CheckoutPageContent() {
   }, [step, shippingMethodId, locale, setShippingMethodId]);
 
   useEffect(() => {
+    if (!isReady || !isAuthenticated) return;
     const requested = parseStep(searchParams.get('step'));
     const clamped = clampCheckoutStep(requested, progressState);
     setStep(clamped);
@@ -117,7 +132,7 @@ export function CheckoutPageContent() {
         scroll: false,
       });
     }
-  }, [searchParams, progressState, router, setStep]);
+  }, [isReady, isAuthenticated, searchParams, progressState, router, setStep]);
 
   const goToStep = useCallback(
     (next: CheckoutStep) => {
@@ -174,6 +189,21 @@ export function CheckoutPageContent() {
       icon: 'lucide:credit-card',
     },
   ];
+
+  if (!isReady || !isAuthenticated) {
+    return (
+      <div className="flex min-h-screen flex-col bg-background">
+        <MarketingHeader />
+        <CategoryNavBar />
+        <SiteShell className="!pt-8">
+          <div className="flex flex-col items-center gap-4 py-16 text-center">
+            <div className="size-8 animate-pulse rounded-full bg-surface-secondary" />
+          </div>
+        </SiteShell>
+        <SiteFooter />
+      </div>
+    );
+  }
 
   if (cartItems.length === 0) {
     return (

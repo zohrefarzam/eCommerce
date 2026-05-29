@@ -26,6 +26,7 @@ type ProductsListingProps = {
   priceMax?: number;
   brands?: string[];
   storageGb?: number[];
+  q?: string;
 };
 
 export function ProductsListing({
@@ -37,6 +38,7 @@ export function ProductsListing({
   priceMax,
   brands = [],
   storageGb = [],
+  q,
 }: ProductsListingProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -66,6 +68,7 @@ export function ProductsListing({
       priceMax,
       brands: brands.length ? brands : undefined,
       storageGb: storageGb.length ? storageGb : undefined,
+      q,
     }),
     [
       activeCategory,
@@ -76,6 +79,7 @@ export function ProductsListing({
       priceMax,
       brands,
       storageGb,
+      q,
     ],
   );
 
@@ -87,6 +91,7 @@ export function ProductsListing({
         facetFilters: { priceMin, priceMax, brands, storageGb },
         sort,
         page,
+        q,
       }),
     [
       landing,
@@ -98,6 +103,7 @@ export function ProductsListing({
       storageGb,
       sort,
       page,
+      q,
     ],
   );
 
@@ -116,8 +122,9 @@ export function ProductsListing({
     [baseFilters, router, searchParams],
   );
 
-  const emptyMessage =
-    activeTab && activeCategory
+  const emptyMessage = q?.trim()
+    ? productsListing.emptyForSearch
+    : activeTab && activeCategory
       ? productsListing.emptyForFilters
       : activeTab
         ? productsListing.emptyForTab
@@ -236,6 +243,7 @@ export function ProductsListingFromSearchParams() {
     priceMax: searchParams.get('priceMax') ?? undefined,
     brand: searchParams.get('brand') ?? undefined,
     storage: searchParams.get('storage') ?? undefined,
+    q: searchParams.get('q') ?? undefined,
   });
 
   return (
@@ -248,6 +256,7 @@ export function ProductsListingFromSearchParams() {
       priceMax={parsed.priceMax}
       brands={parsed.brands ?? []}
       storageGb={parsed.storageGb ?? []}
+      q={parsed.q}
     />
   );
 }

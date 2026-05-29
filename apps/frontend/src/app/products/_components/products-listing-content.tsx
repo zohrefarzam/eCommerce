@@ -177,13 +177,13 @@ export function ProductsListingContent({
                     {products.map((p) => (
                       <ProductCard
                         key={p.id}
+                        productId={p.id}
                         name={p.name}
                         price={p.price}
                         compareAtPrice={p.compareAtPrice}
                         discountPercent={p.discountPercent}
                         image={p.image}
                         imageAlt={p.imageAlt}
-                        defaultFavorite={p.defaultFavorite}
                         onView={() => router.push(productDetailHref(p.id))}
                         onBuy={() => addShowcaseProductToCart(p)}
                       />

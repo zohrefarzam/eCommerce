@@ -11,8 +11,70 @@ export type Messages = {
     notifications: string;
     cart: string;
     account: string;
+    signInSignUp: string;
     switchToEnglish: string;
     switchToPersian: string;
+  };
+  auth: {
+    signInMetaTitle: string;
+    signUpMetaTitle: string;
+    signInTitle: string;
+    signUpTitle: string;
+    subtitle: string;
+    nameLabel: string;
+    emailLabel: string;
+    passwordLabel: string;
+    signInButton: string;
+    signUpButton: string;
+    alreadyHaveAccount: string;
+    noAccount: string;
+    logIn: string;
+    signUp: string;
+    signOut: string;
+    invalidCredentials: string;
+    emailExists: string;
+    requiredField: string;
+    checkoutLoginRequired: string;
+  };
+  account: {
+    orders: string;
+    addresses: string;
+    favorites: string;
+    logout: string;
+    ordersMetaTitle: string;
+    addressesMetaTitle: string;
+    favoritesMetaTitle: string;
+    ordersTitle: string;
+    addressesTitle: string;
+    favoritesTitle: string;
+    ordersEmpty: string;
+    favoritesEmpty: string;
+    addressesEmpty: string;
+    manageAddresses: string;
+    addNewAddress: string;
+    myAddressesSection: string;
+    postalCodeLabel: string;
+    recipientLabel: string;
+    selectLocationOnMap: string;
+    locationMismatchHint: string;
+    editLocation: string;
+    ordersTabCurrent: string;
+    ordersTabDelivered: string;
+    ordersTabReturned: string;
+    ordersTabCancelled: string;
+    ordersSearch: string;
+    ordersSearchNoResults: string;
+    orderStatusCurrent: string;
+    orderStatusDelivered: string;
+    orderStatusReturned: string;
+    orderStatusCancelled: string;
+    orderNumber: (id: string) => string;
+    orderClubPoints: (points: number) => string;
+    viewInvoice: string;
+    editProfile: string;
+    editProfileTitle: string;
+    saveProfile: string;
+    cancel: string;
   };
   productCard: {
     buy: string;
@@ -150,6 +212,7 @@ export type Messages = {
     emptyForCategory: string;
     emptyForTab: string;
     emptyForFilters: string;
+    emptyForSearch: string;
     clearFiltersLabel: string;
     metaProductsTitle: string;
     metaCategoryTitle: (category: string) => string;
@@ -193,8 +256,71 @@ const fa: Messages = {
     notifications: 'اعلان‌ها',
     cart: 'سبد خرید',
     account: 'حساب کاربری',
+    signInSignUp: 'ورود / ثبت‌نام',
     switchToEnglish: 'English',
     switchToPersian: 'فارسی',
+  },
+  auth: {
+    signInMetaTitle: 'ورود | رهپویان',
+    signUpMetaTitle: 'ثبت‌نام | رهپویان',
+    signInTitle: 'ورود به حساب',
+    signUpTitle: 'ایجاد حساب کاربری',
+    subtitle: 'اطلاعات خود را وارد کنید',
+    nameLabel: 'نام',
+    emailLabel: 'ایمیل یا شماره موبایل',
+    passwordLabel: 'رمز عبور',
+    signInButton: 'ورود',
+    signUpButton: 'ایجاد حساب',
+    alreadyHaveAccount: 'حساب دارید؟',
+    noAccount: 'حساب ندارید؟',
+    logIn: 'ورود',
+    signUp: 'ثبت‌نام',
+    signOut: 'خروج',
+    invalidCredentials: 'ایمیل یا رمز عبور نادرست است.',
+    emailExists: 'این ایمیل قبلاً ثبت شده است.',
+    requiredField: 'این فیلد الزامی است',
+    checkoutLoginRequired: 'برای تسویه حساب ابتدا وارد شوید.',
+  },
+  account: {
+    orders: 'سفارش‌ها',
+    addresses: 'آدرس‌ها',
+    favorites: 'علاقه‌مندی‌ها',
+    logout: 'خروج از حساب کاربری',
+    ordersMetaTitle: 'سفارش‌ها | رهپویان',
+    addressesMetaTitle: 'آدرس‌ها | رهپویان',
+    favoritesMetaTitle: 'علاقه‌مندی‌ها | رهپویان',
+    ordersTitle: 'سفارش‌های من',
+    addressesTitle: 'آدرس‌های من',
+    favoritesTitle: 'علاقه‌مندی‌های من',
+    ordersEmpty: 'هنوز سفارشی ثبت نکرده‌اید.',
+    favoritesEmpty: 'هنوز محصولی به علاقه‌مندی‌ها اضافه نکرده‌اید.',
+    addressesEmpty: 'آدرسی ذخیره نشده است.',
+    manageAddresses: 'مدیریت آدرس‌ها در تسویه حساب',
+    addNewAddress: 'افزودن آدرس جدید',
+    myAddressesSection: 'آدرس‌های من',
+    postalCodeLabel: 'کد پستی:',
+    recipientLabel: 'گیرنده:',
+    selectLocationOnMap: 'انتخاب موقعیت از نقشه',
+    locationMismatchHint:
+      'موقعیت ثبت‌شده با آدرس نوشته‌شده هم‌خوانی ندارد. برای تحویل بهتر آن را ویرایش کنید.',
+    editLocation: 'ویرایش',
+    ordersTabCurrent: 'جاری',
+    ordersTabDelivered: 'تحویل شده',
+    ordersTabReturned: 'مرجوع شده',
+    ordersTabCancelled: 'لغو شده',
+    ordersSearch: 'جستجوی سفارش',
+    ordersSearchNoResults: 'سفارشی با این عبارت پیدا نشد.',
+    orderStatusCurrent: 'در حال پردازش',
+    orderStatusDelivered: 'تحویل شده',
+    orderStatusReturned: 'مرجوع شده',
+    orderStatusCancelled: 'لغو شده',
+    orderNumber: (id) => `کد سفارش ${id}`,
+    orderClubPoints: (points) => `${points.toLocaleString('fa-IR')} امتیاز`,
+    viewInvoice: 'مشاهده فاکتور',
+    editProfile: 'ویرایش پروفایل',
+    editProfileTitle: 'ویرایش اطلاعات کاربری',
+    saveProfile: 'ذخیره تغییرات',
+    cancel: 'انصراف',
   },
   productCard: {
     buy: 'افزودن به سبد',
@@ -339,6 +465,8 @@ const fa: Messages = {
       'در این مجموعه محصول نمایشی موجود نیست. همهٔ محصولات را ببینید یا مجموعهٔ دیگری انتخاب کنید.',
     emptyForFilters:
       'با این ترکیب فیلتر محصولی پیدا نشد. فیلترها را پاک کنید یا گزینهٔ دیگری انتخاب کنید.',
+    emptyForSearch:
+      'محصولی با این عبارت پیدا نشد. عبارت دیگری امتحان کنید یا همهٔ محصولات را ببینید.',
     clearFiltersLabel: 'مشاهده همه محصولات',
     metaProductsTitle: 'محصولات | رهپویان',
     metaCategoryTitle: (category) => `${category} | رهپویان`,
@@ -383,8 +511,72 @@ const en: Messages = {
     notifications: 'Notifications',
     cart: 'Cart',
     account: 'Account',
+    signInSignUp: 'Sign In / Sign Up',
     switchToEnglish: 'English',
     switchToPersian: 'فارسی',
+  },
+  auth: {
+    signInMetaTitle: 'Sign In | Rahpoyan',
+    signUpMetaTitle: 'Sign Up | Rahpoyan',
+    signInTitle: 'Log in to Exclusive',
+    signUpTitle: 'Create an account',
+    subtitle: 'Enter your details below',
+    nameLabel: 'Name',
+    emailLabel: 'Email or Phone Number',
+    passwordLabel: 'Password',
+    signInButton: 'Log In',
+    signUpButton: 'Create Account',
+    alreadyHaveAccount: 'Already have account?',
+    noAccount: "Don't have account?",
+    logIn: 'Log in',
+    signUp: 'Sign Up',
+    signOut: 'Sign out',
+    invalidCredentials: 'Invalid email or password.',
+    emailExists: 'An account with this email already exists.',
+    requiredField: 'This field is required',
+    checkoutLoginRequired: 'Please sign in to continue to checkout.',
+  },
+  account: {
+    orders: 'Orders',
+    addresses: 'Addresses',
+    favorites: 'Favorites',
+    logout: 'Sign out',
+    ordersMetaTitle: 'Orders | Rahpoyan',
+    addressesMetaTitle: 'Addresses | Rahpoyan',
+    favoritesMetaTitle: 'Favorites | Rahpoyan',
+    ordersTitle: 'My orders',
+    addressesTitle: 'My addresses',
+    favoritesTitle: 'My favorites',
+    ordersEmpty: 'You have not placed any orders yet.',
+    favoritesEmpty: 'You have not added any favorites yet.',
+    addressesEmpty: 'No saved addresses yet.',
+    manageAddresses: 'Manage addresses at checkout',
+    addNewAddress: 'Add new address',
+    myAddressesSection: 'My addresses',
+    postalCodeLabel: 'Postal code:',
+    recipientLabel: 'Recipient:',
+    selectLocationOnMap: 'Select location on map',
+    locationMismatchHint:
+      'The saved map location does not match the written address. Edit it for smoother delivery.',
+    editLocation: 'Edit',
+    ordersTabCurrent: 'Current',
+    ordersTabDelivered: 'Delivered',
+    ordersTabReturned: 'Returned',
+    ordersTabCancelled: 'Cancelled',
+    ordersSearch: 'Search orders',
+    ordersSearchNoResults: 'No orders match your search.',
+    orderStatusCurrent: 'In progress',
+    orderStatusDelivered: 'Delivered',
+    orderStatusReturned: 'Returned',
+    orderStatusCancelled: 'Cancelled',
+    orderNumber: (id) => `Order ${id}`,
+    orderClubPoints: (points) =>
+      `${points.toLocaleString('en-US')} club points`,
+    viewInvoice: 'View invoice',
+    editProfile: 'Edit profile',
+    editProfileTitle: 'Edit profile information',
+    saveProfile: 'Save changes',
+    cancel: 'Cancel',
   },
   productCard: {
     buy: 'Add to cart',
@@ -530,6 +722,8 @@ const en: Messages = {
       'No demo products were matched in this collection. Browse all items or choose another collection.',
     emptyForFilters:
       'No products matched this combination. Clear filters or try another selection.',
+    emptyForSearch:
+      'No products match your search. Try another term or browse all products.',
     clearFiltersLabel: 'Browse all products',
     metaProductsTitle: 'Products | Rahpoyan',
     metaCategoryTitle: (category) => `${category} | Rahpoyan`,

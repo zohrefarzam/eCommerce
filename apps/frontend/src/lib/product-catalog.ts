@@ -114,7 +114,27 @@ export type ProductsListFilters = {
   priceMax?: number;
   brands?: string[];
   storageGb?: number[];
+  q?: string;
 };
+
+function normalizeSearchText(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+/** Text search over product name and catalog brand (demo until API search exists). */
+export function filterProductsByQuery(
+  products: ShowcaseProduct[],
+  query: string | undefined,
+): ShowcaseProduct[] {
+  const q = normalizeSearchText(query ?? '');
+  if (!q) return products;
+
+  return products.filter((product) => {
+    const name = normalizeSearchText(product.name);
+    const brand = normalizeSearchText(getProductMeta(product.id)?.brand ?? '');
+    return name.includes(q) || brand.includes(q);
+  });
+}
 
 /** Normalize a price string (Persian/Arabic-Indic digits, currency, separators) to a number. */
 export function parseProductPrice(price: string): number {
@@ -286,6 +306,8 @@ export function buildProductsHref(filters: ProductsListFilters = {}): string {
   if (filters.storageGb?.length) {
     params.set('storage', filters.storageGb.join(','));
   }
+  const trimmedQuery = filters.q?.trim();
+  if (trimmedQuery) params.set('q', trimmedQuery);
   const query = params.toString();
   return query ? `/products?${query}` : '/products';
 }
@@ -299,6 +321,7 @@ export function parseProductsSearchParams(params: {
   priceMax?: string;
   brand?: string;
   storage?: string;
+  q?: string;
 }): ProductsListFilters & { sort: ProductSortId } {
   const sortValues: ProductSortId[] = [
     'rating',
@@ -333,6 +356,7 @@ export function parseProductsSearchParams(params: {
           .map((s) => Number.parseInt(s.trim(), 10))
           .filter((n) => Number.isFinite(n))
       : undefined,
+    q: params.q?.trim() || undefined,
   };
 }
 
@@ -410,14 +434,16 @@ export function getListingProducts(
     sort?: ProductSortId;
     page?: number;
     pageSize?: number;
+    q?: string;
   },
 ) {
   const base = getFilteredProducts(landing, {
     categorySlug: options.categorySlug,
     tabId: options.tabId,
   });
-  const facets = getProductFacets(base);
-  const filtered = applyFacetFilters(base, options.facetFilters ?? {});
+  const searched = filterProductsByQuery(base, options.q);
+  const facets = getProductFacets(searched);
+  const filtered = applyFacetFilters(searched, options.facetFilters ?? {});
   const sorted = sortProducts(filtered, options.sort ?? 'rating');
   const paginated = paginateProducts(
     sorted,

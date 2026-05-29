@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { Button } from '@/components/base/button';
+import { useLocale } from '@/i18n';
 import { useCartStore } from '@/lib/cart-store';
+import { showcaseToFavorite, useFavoritesStore } from '@/lib/favorites-store';
 import { cn } from '@/lib/utils';
 import type {
   ProductColorOption,
@@ -32,13 +34,15 @@ export function ProductPurchasePanel({
   onColorSelect,
   labels,
 }: ProductPurchasePanelProps) {
+  const { messages } = useLocale();
   const { product, displayName, colors, storageOptions } = detail;
   const [storageGb, setStorageGb] = useState(
     detail.defaultStorageGb || storageOptions[0]?.gb || 0,
   );
-  const [wishlist, setWishlist] = useState(product.defaultFavorite ?? false);
   const [expandedDescription, setExpandedDescription] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
+  const isFavorite = useFavoritesStore((s) => s.isFavorite(product.id));
+  const toggleFavorite = useFavoritesStore((s) => s.toggle);
 
   const selectedColor = colors.find((c) => c.id === colorId);
   const selectedStorage = storageOptions.find((o) => o.gb === storageGb);
@@ -120,18 +124,29 @@ export function ProductPurchasePanel({
           variant="outline"
           fullWidth
           className="h-12 gap-2 rounded-xl border-foreground font-semibold text-foreground"
-          onPress={() => setWishlist((v) => !v)}
+          onPress={() =>
+            toggleFavorite(
+              showcaseToFavorite({
+                ...product,
+                name: displayName,
+              }),
+            )
+          }
         >
           <Icon
             icon="lucide:heart"
             width={18}
             height={18}
             className={cn(
-              wishlist ? 'text-foreground [&_path]:fill-current' : '',
+              isFavorite ? 'text-foreground [&_path]:fill-current' : '',
             )}
             aria-hidden
           />
-          <span>{labels.addToWishlist}</span>
+          <span>
+            {isFavorite
+              ? messages.productCard.removeFromWishlist
+              : labels.addToWishlist}
+          </span>
         </Button>
         <Button
           variant="primary"

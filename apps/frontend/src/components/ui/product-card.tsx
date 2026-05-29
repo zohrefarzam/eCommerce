@@ -1,13 +1,15 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Button } from '@heroui/react';
 import { Icon } from '@iconify/react';
 import { Image } from '@/components/base/image';
 import { useLocale } from '@/i18n';
+import { useFavoritesStore } from '@/lib/favorites-store';
 import type { ImageSource } from '@/lib/image-source';
 
 export type ProductCardProps = {
+  productId?: string;
   name: string;
   price: string;
   compareAtPrice?: string;
@@ -24,6 +26,7 @@ export type ProductCardProps = {
 };
 
 export function ProductCard({
+  productId,
   name,
   price,
   compareAtPrice,
@@ -42,15 +45,42 @@ export function ProductCard({
   const { productCard } = messages;
   const resolvedBuyLabel = buyLabel ?? productCard.buy;
   const resolvedViewLabel = viewLabel ?? productCard.view;
-  const [favorite, setFavorite] = useState(defaultFavorite);
+  const storeFavorite = useFavoritesStore((s) =>
+    productId ? s.isFavorite(productId) : false,
+  );
+  const toggleStoreFavorite = useFavoritesStore((s) => s.toggle);
+  const [localFavorite, setLocalFavorite] = useState(defaultFavorite);
+  const favorite = productId ? storeFavorite : localFavorite;
   const hasDiscount =
     discountPercent != null &&
     Number.isFinite(discountPercent) &&
     discountPercent > 0;
   const onSale = hasDiscount || Boolean(compareAtPrice);
 
+  const favoriteSnapshot = useMemo(
+    () =>
+      productId
+        ? {
+            productId,
+            name,
+            price,
+            compareAtPrice,
+            discountPercent,
+            image: typeof image === 'string' ? image : image.src,
+            imageAlt: imageAlt ?? name,
+          }
+        : null,
+    [productId, name, price, compareAtPrice, discountPercent, image, imageAlt],
+  );
+
   const toggleFavorite = () => {
-    setFavorite((prev) => {
+    if (productId && favoriteSnapshot) {
+      toggleStoreFavorite(favoriteSnapshot);
+      const next = !storeFavorite;
+      onFavoriteChange?.(next);
+      return;
+    }
+    setLocalFavorite((prev) => {
       const next = !prev;
       onFavoriteChange?.(next);
       return next;

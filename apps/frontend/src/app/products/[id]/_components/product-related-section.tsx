@@ -32,13 +32,13 @@ export function ProductRelatedSection({
         {products.map((product) => (
           <ProductCard
             key={product.id}
+            productId={product.id}
             name={product.name}
             price={product.price}
             compareAtPrice={product.compareAtPrice}
             discountPercent={product.discountPercent}
             image={product.image}
             imageAlt={product.imageAlt}
-            defaultFavorite={product.defaultFavorite}
             onView={() => router.push(productDetailHref(product.id))}
             onBuy={() => addShowcaseProductToCart(product)}
           />

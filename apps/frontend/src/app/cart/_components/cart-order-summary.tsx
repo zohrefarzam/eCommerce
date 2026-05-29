@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/base/button';
 import { Input } from '@/components/base/input';
+import { CheckoutAuthButton } from '@/components/ui/checkout-auth-button';
 import type { Locale } from '@/i18n/config';
 import { formatCartMoney, getCartOrderSummary } from '@/lib/cart-utils';
 import type { CartLineItem } from '@/lib/cart-store';
@@ -98,15 +99,11 @@ export function CartOrderSummaryCard({
         </dd>
       </div>
 
-      <Button
-        variant="primary"
-        fullWidth
-        href="/checkout"
+      <CheckoutAuthButton
+        label={labels.checkout}
+        disabled={items.length === 0}
         className="mt-6 h-12 rounded-xl !bg-foreground !text-background text-base font-semibold hover:!bg-foreground/90"
-        isDisabled={items.length === 0}
-      >
-        {labels.checkout}
-      </Button>
+      />
     </aside>
   );
 }

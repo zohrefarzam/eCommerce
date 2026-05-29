@@ -27,3 +27,21 @@
 .radio [data-slot='radio-control'] {
   border-radius: 9999px !important;
 }
+
+/* Profile orders tabs: keep tab row horizontal (HeroUI + RTL) */
+[data-slot='tabs-list'] {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+}
+
+[data-slot='tabs-tab'] {
+  display: inline-flex !important;
+  width: auto !important;
+  flex: none !important;
+}
+
+[data-slot='tabs-indicator'] {
+  display: none !important;
+}

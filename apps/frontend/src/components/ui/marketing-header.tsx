@@ -2,10 +2,14 @@
 
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 import { Input } from '@/components/base/input';
+import { AccountNav } from '@/components/ui/account-nav';
 import { CartNavDropdown } from '@/components/ui/cart-nav-dropdown';
 import { LanguageSwitch } from '@/components/ui/language-switch';
 import { useLocale } from '@/i18n';
+import { buildProductsHref } from '@/lib/product-catalog';
 import { STOREFRONT_CONTENT_FRAME } from '@/lib/storefront-layout';
 
 const iconMuted = 'text-muted shrink-0';
@@ -13,22 +17,55 @@ const iconNav = 'shrink-0';
 
 export function MarketingHeader() {
   const { messages } = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    if (pathname === '/products') {
+      setQuery(searchParams.get('q') ?? '');
+    }
+  }, [pathname, searchParams]);
+
+  const submitSearch = useCallback(
+    (value: string) => {
+      const trimmed = value.trim();
+      router.push(
+        trimmed
+          ? buildProductsHref({ q: trimmed, page: 1 })
+          : buildProductsHref({ page: 1 }),
+      );
+    },
+    [router],
+  );
 
   const searchInput = (
-    <Input
-      type="search"
-      placeholder={messages.header.search}
-      aria-label={messages.header.search}
-      startContent={
-        <Icon
-          icon="lucide:search"
-          width={18}
-          height={18}
-          className={iconMuted}
-          aria-hidden
-        />
-      }
-    />
+    <form
+      className="w-full min-w-0"
+      onSubmit={(event) => {
+        event.preventDefault();
+        submitSearch(query);
+      }}
+    >
+      <Input
+        type="search"
+        name="q"
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        placeholder={messages.header.search}
+        aria-label={messages.header.search}
+        startContent={
+          <Icon
+            icon="lucide:search"
+            width={18}
+            height={18}
+            className={iconMuted}
+            aria-hidden
+          />
+        }
+      />
+    </form>
   );
 
   return (
@@ -78,15 +115,7 @@ function HeaderActions({ className }: { className?: string }) {
         />
       </IconButton>
       <CartNavDropdown />
-      <IconButton label={messages.header.account}>
-        <Icon
-          icon="lucide:user"
-          width={22}
-          height={22}
-          className={iconNav}
-          aria-hidden
-        />
-      </IconButton>
+      <AccountNav />
     </div>
   );
 }
