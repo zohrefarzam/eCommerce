@@ -126,22 +126,29 @@ const ordersByLocale: Record<Locale, ProfileOrder[]> = {
   en: ordersEn,
 };
 
-export function getProfileOrders(locale: Locale): ProfileOrder[] {
-  return ordersByLocale[locale];
+export function getProfileOrders(
+  locale: Locale,
+  placedOrders: ProfileOrder[] = [],
+): ProfileOrder[] {
+  return [...placedOrders, ...ordersByLocale[locale]];
 }
 
 export function getOrdersByStatus(
   locale: Locale,
   status: OrderStatus,
+  placedOrders: ProfileOrder[] = [],
 ): ProfileOrder[] {
-  return getProfileOrders(locale).filter((order) => order.status === status);
+  return getProfileOrders(locale, placedOrders).filter(
+    (order) => order.status === status,
+  );
 }
 
 export function countOrdersByStatus(
   locale: Locale,
   status: OrderStatus,
+  placedOrders: ProfileOrder[] = [],
 ): number {
-  return getOrdersByStatus(locale, status).length;
+  return getOrdersByStatus(locale, status, placedOrders).length;
 }
 
 function normalizeOrderSearchText(value: string): string {

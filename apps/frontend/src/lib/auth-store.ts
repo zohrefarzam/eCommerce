@@ -3,10 +3,13 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+export type UserRole = 'admin' | 'customer';
+
 export type AuthUser = {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
 };
 
 type StoredAccount = {
@@ -31,17 +34,44 @@ type AuthState = {
     name: string;
     email: string;
   }) => { ok: true } | { ok: false; error: 'exists' | 'invalid' };
+  setUserRole: (
+    email: string,
+    role: UserRole,
+  ) => { ok: true } | { ok: false; error: 'invalid' };
 };
 
 function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
 }
 
+/** Hardcoded admin seeded on first load so the admin panel is always reachable. */
+const SEED_ADMIN_EMAIL = 'admin@store.com';
+const SEED_ADMIN_PASSWORD = 'admin1234';
+
+function createSeedAdmin(): StoredAccount {
+  return {
+    user: {
+      id: 'seed-admin',
+      name: 'Store Admin',
+      email: SEED_ADMIN_EMAIL,
+      role: 'admin',
+    },
+    password: SEED_ADMIN_PASSWORD,
+  };
+}
+
+function withSeedAdmin(
+  accounts: Record<string, StoredAccount>,
+): Record<string, StoredAccount> {
+  if (accounts[SEED_ADMIN_EMAIL]) return accounts;
+  return { ...accounts, [SEED_ADMIN_EMAIL]: createSeedAdmin() };
+}
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       user: null,
-      accounts: {},
+      accounts: withSeedAdmin({}),
       signIn: (email, password) => {
         const key = normalizeEmail(email);
         const account = get().accounts[key];
@@ -60,6 +90,7 @@ export const useAuthStore = create<AuthState>()(
           id: crypto.randomUUID(),
           name: name.trim(),
           email: key,
+          role: 'customer',
         };
         set((state) => ({
           accounts: { ...state.accounts, [key]: { user, password } },
@@ -103,7 +134,52 @@ export const useAuthStore = create<AuthState>()(
         set({ user: updatedUser, accounts });
         return { ok: true };
       },
+
+      setUserRole: (email, role) => {
+        const key = normalizeEmail(email);
+        const account = get().accounts[key];
+        if (!account) return { ok: false, error: 'invalid' };
+
+        const updatedUser: AuthUser = { ...account.user, role };
+        const accounts = {
+          ...get().accounts,
+          [key]: { ...account, user: updatedUser },
+        };
+        const currentUser = get().user;
+        set({
+          accounts,
+          user:
+            currentUser && currentUser.email === key
+              ? updatedUser
+              : currentUser,
+        });
+        return { ok: true };
+      },
     }),
-    { name: 'storefront-auth' },
+    {
+      name: 'storefront-auth',
+      version: 2,
+      migrate: (persisted) => {
+        const state = (persisted ?? {}) as Partial<AuthState>;
+        const accounts: Record<string, StoredAccount> = {};
+        for (const [key, account] of Object.entries(state.accounts ?? {})) {
+          accounts[key] = {
+            ...account,
+            user: { ...account.user, role: account.user.role ?? 'customer' },
+          };
+        }
+        const user = state.user
+          ? { ...state.user, role: state.user.role ?? 'customer' }
+          : null;
+        return { ...state, accounts: withSeedAdmin(accounts), user };
+      },
+      merge: (persisted, current) => {
+        const merged = {
+          ...current,
+          ...(persisted as Partial<AuthState>),
+        } as AuthState;
+        return { ...merged, accounts: withSeedAdmin(merged.accounts ?? {}) };
+      },
+    },
   ),
 );

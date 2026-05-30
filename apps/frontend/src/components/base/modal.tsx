@@ -18,6 +18,8 @@ export type BaseModalProps = Omit<
   className?: string;
   /** Classes on the scrollable body region. */
   bodyClassName?: string;
+  /** Hide title bar and close button (content-only dialog). */
+  hideHeader?: boolean;
   /** `bottom` works well on mobile; `center` on larger screens. */
   placement?: 'auto' | 'top' | 'center' | 'bottom';
 };
@@ -43,6 +45,7 @@ export function Modal({
   children,
   className,
   bodyClassName,
+  hideHeader = false,
   placement = 'bottom',
 }: BaseModalProps) {
   return (
@@ -53,14 +56,18 @@ export function Modal({
           scroll="inside"
           className={cn(containerClass, className)}
         >
-          <HeroUIModal.Dialog className={dialogClass}>
-            <HeroUIModal.Header className={headerClass}>
-              <HeroUIModal.Heading className={headingClass}>
-                {title}
-              </HeroUIModal.Heading>
-              <HeroUIModal.CloseTrigger />
-            </HeroUIModal.Header>
-            <HeroUIModal.Body className={cn(bodyClass, bodyClassName)}>
+          <HeroUIModal.Dialog className={dialogClass} aria-label={title}>
+            {hideHeader ? null : (
+              <HeroUIModal.Header className={headerClass}>
+                <HeroUIModal.Heading className={headingClass}>
+                  {title}
+                </HeroUIModal.Heading>
+                <HeroUIModal.CloseTrigger />
+              </HeroUIModal.Header>
+            )}
+            <HeroUIModal.Body
+              className={cn(bodyClass, hideHeader && '!pt-5', bodyClassName)}
+            >
               {children}
             </HeroUIModal.Body>
           </HeroUIModal.Dialog>

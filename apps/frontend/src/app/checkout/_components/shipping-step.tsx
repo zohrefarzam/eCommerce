@@ -51,6 +51,12 @@ export function ShippingStep({
     },
   ];
 
+  const selectedMethod =
+    shippingMethodId === 'free' || shippingMethodId === 'express'
+      ? shippingMethodId
+      : undefined;
+  const canProceed = selectedMethod != null;
+
   return (
     <section className="flex flex-col gap-6 sm:gap-8">
       <h2 className="text-lg font-bold text-foreground sm:text-xl">
@@ -58,11 +64,7 @@ export function ShippingStep({
       </h2>
 
       <RadioGroup
-        value={
-          shippingMethodId === 'free' || shippingMethodId === 'express'
-            ? shippingMethodId
-            : 'free'
-        }
+        value={selectedMethod}
         onChange={(value) => onSelectMethod(value as ShippingMethodId)}
         aria-label={labels.shipmentMethodTitle}
         className="gap-4"
@@ -72,7 +74,7 @@ export function ShippingStep({
             <div
               className={cn(
                 'flex w-full flex-col gap-3 rounded-xl border-2 bg-surface-secondary px-4 py-4 sm:flex-row sm:items-center sm:justify-between',
-                shippingMethodId === method.id
+                selectedMethod === method.id
                   ? 'border-foreground'
                   : 'border-transparent',
               )}
@@ -96,6 +98,7 @@ export function ShippingStep({
         nextLabel={labels.next}
         onBack={onBack}
         onNext={onNext}
+        nextDisabled={!canProceed}
       />
     </section>
   );

@@ -1,12 +1,21 @@
 import type { Locale } from '@/i18n/config';
 import type { CartLineItem } from '@/lib/cart-store';
 import type { ShippingMethodId } from '@/lib/checkout-data';
-import { getShippingPrice } from '@/lib/checkout-data';
+import {
+  getScheduledDeliveryFee,
+  getSellerShipmentFee,
+  getShippingPrice,
+} from '@/lib/checkout-data';
 import { parseProductPrice } from '@/lib/product-catalog';
 
 export type CartOrderSummary = {
   subtotal: number;
   tax: number;
+  /** Express/free method fee only. */
+  methodShipping: number;
+  sellerShipmentFee: number;
+  deliveryScheduleFee: number;
+  /** Sum of all shipping-related fees. */
   shipping: number;
   total: number;
 };
@@ -44,19 +53,37 @@ export function getCartSubtotal(items: readonly CartLineItem[]): number {
   return items.reduce((sum, item) => sum + cartLineTotalAmount(item), 0);
 }
 
+export type CartOrderSummaryOptions = {
+  shippingMethodId?: ShippingMethodId;
+  scheduledDeliveryDate?: string | null;
+  /** Include seller + scheduled delivery fees (checkout address step). */
+  includeCheckoutFees?: boolean;
+};
+
 export function getCartOrderSummary(
   items: readonly CartLineItem[],
   locale: Locale,
-  options?: { shippingMethodId?: ShippingMethodId },
+  options?: CartOrderSummaryOptions,
 ): CartOrderSummary {
   const subtotal = getCartSubtotal(items);
   const tax = Math.round(subtotal * TAX_RATE);
   const shippingMethodId =
     options?.shippingMethodId ?? DEFAULT_CART_SHIPPING_METHOD;
-  const shipping = getShippingPrice(shippingMethodId, locale);
+  const methodShipping = getShippingPrice(shippingMethodId, locale);
+  const sellerShipmentFee =
+    options?.includeCheckoutFees && items.length > 0
+      ? getSellerShipmentFee(locale)
+      : 0;
+  const deliveryScheduleFee = options?.includeCheckoutFees
+    ? getScheduledDeliveryFee(options.scheduledDeliveryDate, locale)
+    : 0;
+  const shipping = methodShipping + sellerShipmentFee + deliveryScheduleFee;
   return {
     subtotal,
     tax,
+    methodShipping,
+    sellerShipmentFee,
+    deliveryScheduleFee,
     shipping,
     total: subtotal + tax + shipping,
   };

@@ -1,11 +1,12 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/base/button';
 import { Input } from '@/components/base/input';
 import { Tabs } from '@/components/base/tabs';
 import { useLocale } from '@/i18n';
+import { useCheckoutOrdersStore } from '@/lib/checkout-orders-store';
 import {
   countOrdersByStatus,
   getOrdersByStatus,
@@ -38,21 +39,31 @@ const TAB_LABELS: Record<
 export function ProfileOrdersPage() {
   const { messages, locale } = useLocale();
   const labels = messages.account;
+  const placedOrders = useCheckoutOrdersStore((s) => s.orders);
+  const [mounted, setMounted] = useState(false);
   const [selectedTab, setSelectedTab] = useState<OrderStatus>('current');
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const tabCounts = useMemo(
     () =>
       ORDER_TABS.reduce(
         (acc, status) => {
-          acc[status] = countOrdersByStatus(locale, status);
+          acc[status] = countOrdersByStatus(
+            locale,
+            status,
+            mounted ? placedOrders : [],
+          );
           return acc;
         },
         {} as Record<OrderStatus, number>,
       ),
-    [locale],
+    [locale, mounted, placedOrders],
   );
 
   return (
@@ -131,7 +142,11 @@ export function ProfileOrdersPage() {
 
         {ORDER_TABS.map((status) => (
           <Tabs.Panel key={status} id={status}>
-            <OrdersPanel status={status} searchQuery={searchQuery} />
+            <OrdersPanel
+              status={status}
+              searchQuery={searchQuery}
+              placedOrders={mounted ? placedOrders : []}
+            />
           </Tabs.Panel>
         ))}
       </Tabs>
@@ -142,18 +157,20 @@ export function ProfileOrdersPage() {
 function OrdersPanel({
   status,
   searchQuery,
+  placedOrders,
 }: {
   status: OrderStatus;
   searchQuery: string;
+  placedOrders: ReturnType<typeof useCheckoutOrdersStore.getState>['orders'];
 }) {
   const { messages, locale } = useLocale();
   const labels = messages.account;
   const orders = useMemo(
     () =>
-      getOrdersByStatus(locale, status).filter((order) =>
+      getOrdersByStatus(locale, status, placedOrders).filter((order) =>
         orderMatchesSearchQuery(order, searchQuery),
       ),
-    [locale, status, searchQuery],
+    [locale, status, searchQuery, placedOrders],
   );
 
   if (orders.length === 0) {

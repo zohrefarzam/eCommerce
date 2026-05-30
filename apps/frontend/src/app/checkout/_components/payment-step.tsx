@@ -19,6 +19,7 @@ type PaymentStepProps = {
   items: readonly CartLineItem[];
   address: CheckoutAddress | null;
   shippingMethodId: ShippingMethodId;
+  scheduledDeliveryDate?: string | null;
   shippingLabel: string;
   paymentMethodId: PaymentMethodId;
   payment: PaymentDetails;
@@ -30,6 +31,7 @@ type PaymentStepProps = {
   onBack: () => void;
   onPay: () => void;
   payDisabled?: boolean;
+  paymentError?: string | null;
 };
 
 export function PaymentStep({
@@ -38,6 +40,7 @@ export function PaymentStep({
   items,
   address,
   shippingMethodId,
+  scheduledDeliveryDate,
   shippingLabel,
   paymentMethodId,
   payment,
@@ -46,6 +49,7 @@ export function PaymentStep({
   onBack,
   onPay,
   payDisabled,
+  paymentError,
 }: PaymentStepProps) {
   const isIran = locale === 'fa';
 
@@ -132,6 +136,12 @@ export function PaymentStep({
           {labels.billingSameAsShipping}
         </Checkbox>
 
+        {paymentError ? (
+          <p className="text-sm font-medium text-red-600" role="alert">
+            {paymentError}
+          </p>
+        ) : null}
+
         <CheckoutNavButtons
           backLabel={labels.back}
           nextLabel={labels.pay}
@@ -146,6 +156,7 @@ export function PaymentStep({
         locale={locale}
         labels={labels}
         shippingMethodId={shippingMethodId}
+        scheduledDeliveryDate={scheduledDeliveryDate}
         address={address}
         shippingLabel={shippingLabel}
         showReview

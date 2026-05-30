@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { MarketingHeader } from '@/components/ui/marketing-header';
@@ -9,6 +9,9 @@ import { SiteFooter } from '@/landing/_components/layout/site-footer';
 import { SiteShell } from '@/landing/_components/layout/site-shell';
 import { useLocale } from '@/i18n';
 import { useCartStore } from '@/lib/cart-store';
+import { getCartOrderSummary } from '@/lib/cart-utils';
+import { useCheckoutOrdersStore } from '@/lib/checkout-orders-store';
+import { isPaymentStepComplete } from '@/lib/checkout-validation';
 import { useAuth } from '@/providers/auth-provider';
 import {
   getDeliveryTimeSlots,
@@ -69,7 +72,11 @@ export function CheckoutPageContent() {
   const payment = useCheckoutStore((s) => s.payment);
   const setPaymentMethodId = useCheckoutStore((s) => s.setPaymentMethodId);
   const setPaymentField = useCheckoutStore((s) => s.setPaymentField);
+  const resetCheckout = useCheckoutStore((s) => s.resetCheckout);
   const clearCart = useCartStore((s) => s.clearCart);
+  const placeOrder = useCheckoutOrdersStore((s) => s.placeOrder);
+
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const selectedAddress = useCheckoutStore(selectSelectedAddress);
 
@@ -117,12 +124,6 @@ export function CheckoutPageContent() {
   }, [locale, scheduledDeliveryDate, setScheduledDeliveryDate]);
 
   useEffect(() => {
-    if (step === 2 && shippingMethodId === 'scheduled') {
-      setShippingMethodId('free', locale);
-    }
-  }, [step, shippingMethodId, locale, setShippingMethodId]);
-
-  useEffect(() => {
     if (!isReady || !isAuthenticated) return;
     const requested = parseStep(searchParams.get('step'));
     const clamped = clampCheckoutStep(requested, progressState);
@@ -152,11 +153,29 @@ export function CheckoutPageContent() {
     [locale, setShippingMethodId],
   );
 
+  const handlePaymentMethodChange = useCallback(
+    (id: typeof paymentMethodId) => {
+      setPaymentError(null);
+      setPaymentMethodId(id);
+    },
+    [setPaymentMethodId],
+  );
+
+  const handlePaymentFieldChange = useCallback(
+    (...args: Parameters<typeof setPaymentField>) => {
+      setPaymentError(null);
+      setPaymentField(...args);
+    },
+    [setPaymentField],
+  );
+
   const shippingLabel = useMemo(() => {
     const methodLabel =
       shippingMethodId === 'express'
         ? labels.shippingExpress
-        : labels.shippingFree;
+        : shippingMethodId === 'free'
+          ? labels.shippingFree
+          : labels.shippingScheduled;
     if (!scheduledDeliveryDate?.includes('|')) return methodLabel;
     const [dateId, slotId] = scheduledDeliveryDate.split('|');
     const dateLabel = dateId
@@ -169,11 +188,31 @@ export function CheckoutPageContent() {
   }, [shippingMethodId, scheduledDeliveryDate, labels, locale]);
 
   const canCompleteCheckout = isCheckoutComplete(progressState);
+  const canPay =
+    canCompleteCheckout &&
+    isPaymentStepComplete(paymentMethodId, payment, locale);
 
   const handlePay = () => {
     if (!canCompleteCheckout || !selectedAddress) return;
+    if (!isPaymentStepComplete(paymentMethodId, payment, locale)) {
+      setPaymentError(labels.paymentIncomplete);
+      return;
+    }
+
+    const summary = getCartOrderSummary(cartItems, locale, {
+      shippingMethodId,
+      scheduledDeliveryDate,
+      includeCheckoutFees: true,
+    });
+    const orderId = placeOrder({
+      items: cartItems,
+      locale,
+      total: summary.total,
+    });
+
     clearCart();
-    router.push('/products');
+    resetCheckout(locale);
+    router.push(`/checkout/confirmation?orderId=${orderId}`);
   };
 
   const stepperSteps = [
@@ -278,14 +317,16 @@ export function CheckoutPageContent() {
               items={cartItems}
               address={selectedAddress}
               shippingMethodId={shippingMethodId}
+              scheduledDeliveryDate={scheduledDeliveryDate}
               shippingLabel={shippingLabel}
               paymentMethodId={paymentMethodId}
               payment={payment}
-              onPaymentMethodChange={setPaymentMethodId}
-              onPaymentFieldChange={setPaymentField}
+              onPaymentMethodChange={handlePaymentMethodChange}
+              onPaymentFieldChange={handlePaymentFieldChange}
               onBack={() => goToStep(2)}
               onPay={handlePay}
-              payDisabled={!canCompleteCheckout}
+              payDisabled={!canPay}
+              paymentError={paymentError}
             />
           ) : null}
         </div>

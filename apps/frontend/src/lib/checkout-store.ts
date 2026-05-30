@@ -46,7 +46,7 @@ type CheckoutState = {
     key: K,
     value: PaymentDetails[K],
   ) => void;
-  resetCheckout: () => void;
+  resetCheckout: (locale?: Locale) => void;
   hydrateDefaults: (locale: Locale) => void;
   syncSelectedAddress: () => void;
 };
@@ -209,7 +209,7 @@ export const useCheckoutStore = create<CheckoutState>()(
         set({ payment: { ...get().payment, [key]: value } });
       },
 
-      resetCheckout: () => set(createInitialState('fa')),
+      resetCheckout: (locale = 'fa') => set(createInitialState(locale)),
 
       hydrateDefaults: (locale) => {
         const current = get();

@@ -55,7 +55,7 @@ function AccountMenuItem({
 export function AccountNav() {
   const router = useRouter();
   const { messages, config } = useLocale();
-  const { user, isAuthenticated, isReady, signOut } = useAuth();
+  const { user, isAuthenticated, isAdmin, isReady, signOut } = useAuth();
   const [open, setOpen] = useState(false);
   const labels = messages.account;
 
@@ -135,6 +135,14 @@ export function AccountNav() {
           </div>
 
           <nav className="flex flex-col py-1">
+            {isAdmin ? (
+              <AccountMenuItem
+                href="/admin"
+                icon="lucide:layout-dashboard"
+                label={messages.admin.panelTitle}
+                onNavigate={closeMenu}
+              />
+            ) : null}
             {PROFILE_NAV.map((item) => (
               <AccountMenuItem
                 key={item.href}

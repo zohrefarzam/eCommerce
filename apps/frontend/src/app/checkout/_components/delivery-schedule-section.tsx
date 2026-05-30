@@ -11,6 +11,7 @@ import {
   formatAddressOneLine,
   getDeliveryTimeSlots,
   getScheduledDateOptions,
+  getSellerShipmentFee,
 } from '@/lib/checkout-data';
 import type { CartLineItem } from '@/lib/cart-store';
 import { cartLineTitle, formatCartMoney } from '@/lib/cart-utils';
@@ -58,8 +59,10 @@ export function DeliveryScheduleSection({
   };
 
   const firstItem = items[0];
-  const sellerShippingFee =
-    locale === 'fa' ? '۲۰۰,۰۰۰ تومان' : formatCartMoney(5, locale);
+  const sellerShippingFee = formatCartMoney(
+    getSellerShipmentFee(locale),
+    locale,
+  );
 
   return (
     <div

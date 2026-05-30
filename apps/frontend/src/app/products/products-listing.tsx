@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ProductsListingContent } from './_components/products-listing-content';
 import type { BreadcrumbItem } from './_components/products-breadcrumb';
@@ -15,6 +15,8 @@ import {
   type ProductSortId,
   type ProductsListFilters,
 } from '@/lib/product-catalog';
+import { getAdminStorefrontListing } from '@/lib/admin-catalog-bridge';
+import { useAdminProductsStore } from '@/lib/admin-products-store';
 import { useLandingContent, useLocale } from '@/i18n';
 
 type ProductsListingProps = {
@@ -45,6 +47,18 @@ export function ProductsListing({
   const landing = useLandingContent();
   const { messages } = useLocale();
   const { productsListing } = messages;
+  const adminProducts = useAdminProductsStore((s) => s.products);
+  const [catalogReady, setCatalogReady] = useState(false);
+
+  useEffect(() => {
+    const unsub = useAdminProductsStore.persist.onFinishHydration(() => {
+      setCatalogReady(true);
+    });
+    if (useAdminProductsStore.persist.hasHydrated()) {
+      setCatalogReady(true);
+    }
+    return unsub;
+  }, []);
 
   const activeCategory = isValidCategorySlug(landing, categorySlug)
     ? categorySlug
@@ -83,29 +97,35 @@ export function ProductsListing({
     ],
   );
 
-  const listing = useMemo(
-    () =>
-      getListingProducts(landing, {
-        categorySlug: activeCategory,
-        tabId: activeTab,
-        facetFilters: { priceMin, priceMax, brands, storageGb },
-        sort,
-        page,
-        q,
-      }),
-    [
-      landing,
-      activeCategory,
-      activeTab,
-      priceMin,
-      priceMax,
-      brands,
-      storageGb,
+  const listing = useMemo(() => {
+    const options = {
+      categorySlug: activeCategory,
+      tabId: activeTab,
+      facetFilters: { priceMin, priceMax, brands, storageGb },
       sort,
       page,
       q,
-    ],
-  );
+    };
+
+    if (catalogReady) {
+      return getAdminStorefrontListing(landing, adminProducts, options);
+    }
+
+    return getListingProducts(landing, options);
+  }, [
+    landing,
+    adminProducts,
+    catalogReady,
+    activeCategory,
+    activeTab,
+    priceMin,
+    priceMax,
+    brands,
+    storageGb,
+    sort,
+    page,
+    q,
+  ]);
 
   const navigate = useCallback(
     (patch: Partial<ProductsListFilters>) => {

@@ -1,4 +1,5 @@
 import type { Locale } from '@/i18n/config';
+import { parseProductPrice } from '@/lib/product-catalog';
 
 export type AddressTag = 'home' | 'office' | 'other';
 
@@ -219,4 +220,33 @@ export function getScheduledDateLabel(
   const option = getScheduledDateOptions(locale).find((d) => d.id === dateId);
   if (!option) return undefined;
   return `${option.dayLabel} ${option.dateLabel}`;
+}
+
+/** Seller-handled shipment fee shown on the address step. */
+export function getSellerShipmentFee(locale: Locale): number {
+  return locale === 'fa' ? 200_000 : 5;
+}
+
+function parseScheduledFeeLabel(feeLabel: string, locale: Locale): number {
+  const normalized = feeLabel.trim();
+  if (locale === 'fa') {
+    if (normalized.includes('رایگان')) return 0;
+    return parseProductPrice(normalized);
+  }
+  if (/free/i.test(normalized)) return 0;
+  const match = normalized.match(/\$?\s*([\d,.]+)/);
+  if (!match) return 0;
+  return Number.parseFloat(match[1].replace(/,/g, '')) || 0;
+}
+
+/** Fee for the selected scheduled delivery date (from `dateId|slotId`). */
+export function getScheduledDeliveryFee(
+  scheduledDeliveryDate: string | null | undefined,
+  locale: Locale,
+): number {
+  if (!scheduledDeliveryDate?.includes('|')) return 0;
+  const dateId = scheduledDeliveryDate.split('|')[0];
+  const option = getScheduledDateOptions(locale).find((d) => d.id === dateId);
+  if (!option) return 0;
+  return parseScheduledFeeLabel(option.feeLabel, locale);
 }

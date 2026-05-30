@@ -49,6 +49,7 @@ export function Image({
   className,
 }: BaseImageProps) {
   const remote = isRemoteImageUrl(src);
+  const dataUrl = typeof src === 'string' && src.startsWith('data:');
   const fitClass = fitClasses[fit];
   const resolvedSizes = capSizesToIntrinsicWidth(sizes, src);
   const remoteSrc = remote ? sharpenRemoteImageUrl(src as string) : '';
@@ -56,11 +57,11 @@ export function Image({
   if (layout === 'responsive') {
     const responsiveClassName = cx('h-auto w-full max-w-full', className);
 
-    if (remote) {
+    if (remote || dataUrl) {
       return (
         // eslint-disable-next-line @next/next/no-img-element -- encapsulated; do not use <img> elsewhere
         <img
-          src={remoteSrc}
+          src={remote ? remoteSrc : (src as string)}
           alt={alt}
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
@@ -103,11 +104,11 @@ export function Image({
 
   const mergedClassName = cx(fitClass, className);
 
-  if (remote) {
+  if (remote || dataUrl) {
     return (
       // eslint-disable-next-line @next/next/no-img-element -- encapsulated; do not use <img> elsewhere
       <img
-        src={remoteSrc}
+        src={remote ? remoteSrc : (src as string)}
         alt={alt}
         loading={priority ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : 'auto'}

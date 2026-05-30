@@ -8,7 +8,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useAuthStore, type AuthUser } from '@/lib/auth-store';
+import { useAuthStore, type AuthUser, type UserRole } from '@/lib/auth-store';
 
 type SignInResult = { ok: true } | { ok: false; error: 'invalid' };
 
@@ -17,6 +17,7 @@ type SignUpResult = { ok: true } | { ok: false; error: 'exists' };
 type AuthContextValue = {
   user: AuthUser | null;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   isReady: boolean;
   signIn: (email: string, password: string) => SignInResult;
   signUp: (input: {
@@ -29,6 +30,10 @@ type AuthContextValue = {
     name: string;
     email: string;
   }) => { ok: true } | { ok: false; error: 'exists' | 'invalid' };
+  setUserRole: (
+    email: string,
+    role: UserRole,
+  ) => { ok: true } | { ok: false; error: 'invalid' };
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -39,6 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUpStore = useAuthStore((s) => s.signUp);
   const signOutStore = useAuthStore((s) => s.signOut);
   const updateProfileStore = useAuthStore((s) => s.updateProfile);
+  const setUserRoleStore = useAuthStore((s) => s.setUserRole);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -69,17 +75,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [updateProfileStore],
   );
 
+  const setUserRole = useCallback(
+    (email: string, role: UserRole) => setUserRoleStore(email, role),
+    [setUserRoleStore],
+  );
+
   const value = useMemo(
     () => ({
       user,
       isAuthenticated: Boolean(user),
+      isAdmin: user?.role === 'admin',
       isReady,
       signIn,
       signUp,
       signOut,
       updateProfile,
+      setUserRole,
     }),
-    [user, isReady, signIn, signUp, signOut, updateProfile],
+    [user, isReady, signIn, signUp, signOut, updateProfile, setUserRole],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

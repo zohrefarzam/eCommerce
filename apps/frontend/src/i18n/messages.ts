@@ -76,6 +76,66 @@ export type Messages = {
     saveProfile: string;
     cancel: string;
   };
+  admin: {
+    metaTitle: string;
+    panelTitle: string;
+    backToStore: string;
+    notAuthorized: string;
+    navOverview: string;
+    navProducts: string;
+    navOrders: string;
+    navUsers: string;
+    navCategories: string;
+    overviewTitle: string;
+    statProducts: string;
+    statOrders: string;
+    statRevenue: string;
+    statUsers: string;
+    productsTitle: string;
+    addProduct: string;
+    editProductTitle: string;
+    productName: string;
+    productPrice: string;
+    productBrand: string;
+    productCategory: string;
+    productImage: string;
+    uploadImage: string;
+    removeImage: string;
+    invalidImageType: string;
+    imageTooLarge: string;
+    ordersTitle: string;
+    orderColId: string;
+    orderColDate: string;
+    orderColTotal: string;
+    orderColStatus: string;
+    usersTitle: string;
+    userColName: string;
+    userColEmail: string;
+    userColRole: string;
+    roleAdmin: string;
+    roleCustomer: string;
+    youBadge: string;
+    categoriesTitle: string;
+    addCategory: string;
+    editCategoryTitle: string;
+    categoryName: string;
+    categorySlug: string;
+    colActions: string;
+    edit: string;
+    delete: string;
+    save: string;
+    cancel: string;
+    emptyProducts: string;
+    emptyOrders: string;
+    emptyCategories: string;
+    confirmDeleteTitle: string;
+    confirmDelete: string;
+    requiredField: string;
+    slugExists: string;
+    paginationPrev: string;
+    paginationNext: string;
+    paginationInfo: (start: number, end: number, total: number) => string;
+  };
   productCard: {
     buy: string;
     view: string;
@@ -186,6 +246,8 @@ export type Messages = {
     subtotalLabel: string;
     taxLabel: string;
     shippingLabel: string;
+    sellerShipmentFeeLabel: string;
+    deliveryScheduleFeeLabel: string;
     totalLabel: string;
     deliveryToSelectedAddress: string;
     changeAddress: string;
@@ -204,6 +266,12 @@ export type Messages = {
     unit: string;
     confirmAndContinue: string;
     noCityOptions: string;
+    paymentIncomplete: string;
+    confirmationTitle: string;
+    confirmationDescription: string;
+    confirmationOrderId: string;
+    viewOrders: string;
+    confirmationContinueShopping: string;
   };
   productsListing: {
     allEyebrow: string;
@@ -322,6 +390,67 @@ const fa: Messages = {
     saveProfile: 'ذخیره تغییرات',
     cancel: 'انصراف',
   },
+  admin: {
+    metaTitle: 'پنل مدیریت | رهپویان',
+    panelTitle: 'پنل مدیریت',
+    backToStore: 'بازگشت به فروشگاه',
+    notAuthorized: 'شما به این بخش دسترسی ندارید.',
+    navOverview: 'نمای کلی',
+    navProducts: 'محصولات',
+    navOrders: 'سفارش‌ها',
+    navUsers: 'کاربران',
+    navCategories: 'دسته‌بندی‌ها',
+    overviewTitle: 'نمای کلی',
+    statProducts: 'محصولات',
+    statOrders: 'سفارش‌ها',
+    statRevenue: 'درآمد',
+    statUsers: 'کاربران',
+    productsTitle: 'مدیریت محصولات',
+    addProduct: 'افزودن محصول',
+    editProductTitle: 'ویرایش محصول',
+    productName: 'نام محصول',
+    productPrice: 'قیمت',
+    productBrand: 'برند',
+    productCategory: 'دسته‌بندی',
+    productImage: 'تصویر محصول',
+    uploadImage: 'بارگذاری تصویر',
+    removeImage: 'حذف تصویر',
+    invalidImageType: 'فقط تصاویر JPEG، PNG، WebP یا GIF مجاز است.',
+    imageTooLarge: 'حجم تصویر باید کمتر از ۲ مگابایت باشد.',
+    ordersTitle: 'مدیریت سفارش‌ها',
+    orderColId: 'کد سفارش',
+    orderColDate: 'تاریخ',
+    orderColTotal: 'مبلغ',
+    orderColStatus: 'وضعیت',
+    usersTitle: 'مدیریت کاربران',
+    userColName: 'نام',
+    userColEmail: 'ایمیل',
+    userColRole: 'نقش',
+    roleAdmin: 'مدیر',
+    roleCustomer: 'مشتری',
+    youBadge: 'شما',
+    categoriesTitle: 'مدیریت دسته‌بندی‌ها',
+    addCategory: 'افزودن دسته‌بندی',
+    editCategoryTitle: 'ویرایش دسته‌بندی',
+    categoryName: 'نام دسته‌بندی',
+    categorySlug: 'شناسه (slug)',
+    colActions: 'عملیات',
+    edit: 'ویرایش',
+    delete: 'حذف',
+    save: 'ذخیره',
+    cancel: 'انصراف',
+    emptyProducts: 'محصولی وجود ندارد.',
+    emptyOrders: 'سفارشی وجود ندارد.',
+    emptyCategories: 'دسته‌بندی‌ای وجود ندارد.',
+    confirmDeleteTitle: 'حذف مورد',
+    confirmDelete: 'آیا از حذف این مورد مطمئن هستید؟',
+    requiredField: 'این فیلد الزامی است',
+    slugExists: 'این شناسه قبلاً استفاده شده است.',
+    paginationPrev: 'قبلی',
+    paginationNext: 'بعدی',
+    paginationInfo: (start, end, total) =>
+      `نمایش ${start} تا ${end} از ${total}`,
+  },
   productCard: {
     buy: 'افزودن به سبد',
     view: 'مشاهده محصول',
@@ -433,6 +562,8 @@ const fa: Messages = {
     subtotalLabel: 'جمع کالاها',
     taxLabel: 'مالیات',
     shippingLabel: 'هزینه ارسال',
+    sellerShipmentFeeLabel: 'ارسال فروشنده',
+    deliveryScheduleFeeLabel: 'هزینه زمان‌بندی تحویل',
     totalLabel: 'مبلغ قابل پرداخت',
     deliveryToSelectedAddress: 'ارسال به آدرس انتخاب شده',
     changeAddress: 'تغییر آدرس',
@@ -454,6 +585,13 @@ const fa: Messages = {
     unit: 'واحد',
     confirmAndContinue: 'تایید و ادامه',
     noCityOptions: 'بدون گزینه',
+    paymentIncomplete: 'لطفاً اطلاعات پرداخت را کامل کنید.',
+    confirmationTitle: 'سفارش شما ثبت شد',
+    confirmationDescription:
+      'سفارش با موفقیت ثبت شد. جزئیات را در بخش سفارش‌ها می‌توانید ببینید.',
+    confirmationOrderId: 'شماره سفارش',
+    viewOrders: 'مشاهده سفارش‌ها',
+    confirmationContinueShopping: 'ادامه خرید',
   },
   productsListing: {
     allEyebrow: 'فروشگاه',
@@ -578,6 +716,67 @@ const en: Messages = {
     saveProfile: 'Save changes',
     cancel: 'Cancel',
   },
+  admin: {
+    metaTitle: 'Admin Panel | Rahpoyan',
+    panelTitle: 'Admin Panel',
+    backToStore: 'Back to store',
+    notAuthorized: 'You do not have access to this area.',
+    navOverview: 'Overview',
+    navProducts: 'Products',
+    navOrders: 'Orders',
+    navUsers: 'Users',
+    navCategories: 'Categories',
+    overviewTitle: 'Overview',
+    statProducts: 'Products',
+    statOrders: 'Orders',
+    statRevenue: 'Revenue',
+    statUsers: 'Users',
+    productsTitle: 'Manage products',
+    addProduct: 'Add product',
+    editProductTitle: 'Edit product',
+    productName: 'Product name',
+    productPrice: 'Price',
+    productBrand: 'Brand',
+    productCategory: 'Category',
+    productImage: 'Product image',
+    uploadImage: 'Upload image',
+    removeImage: 'Remove image',
+    invalidImageType: 'Please choose a JPEG, PNG, WebP, or GIF image.',
+    imageTooLarge: 'Image must be smaller than 2 MB.',
+    ordersTitle: 'Manage orders',
+    orderColId: 'Order',
+    orderColDate: 'Date',
+    orderColTotal: 'Total',
+    orderColStatus: 'Status',
+    usersTitle: 'Manage users',
+    userColName: 'Name',
+    userColEmail: 'Email',
+    userColRole: 'Role',
+    roleAdmin: 'Admin',
+    roleCustomer: 'Customer',
+    youBadge: 'You',
+    categoriesTitle: 'Manage categories',
+    addCategory: 'Add category',
+    editCategoryTitle: 'Edit category',
+    categoryName: 'Category name',
+    categorySlug: 'Slug',
+    colActions: 'Actions',
+    edit: 'Edit',
+    delete: 'Delete',
+    save: 'Save',
+    cancel: 'Cancel',
+    emptyProducts: 'No products yet.',
+    emptyOrders: 'No orders yet.',
+    emptyCategories: 'No categories yet.',
+    confirmDeleteTitle: 'Delete item',
+    confirmDelete: 'Are you sure you want to delete this item?',
+    requiredField: 'This field is required',
+    slugExists: 'This slug is already in use.',
+    paginationPrev: 'Previous',
+    paginationNext: 'Next',
+    paginationInfo: (start, end, total) =>
+      `Showing ${start}–${end} of ${total}`,
+  },
   productCard: {
     buy: 'Add to cart',
     view: 'View product',
@@ -691,6 +890,8 @@ const en: Messages = {
     subtotalLabel: 'Subtotal',
     taxLabel: 'Estimated Tax',
     shippingLabel: 'Estimated shipping & Handling',
+    sellerShipmentFeeLabel: 'Seller shipment',
+    deliveryScheduleFeeLabel: 'Scheduled delivery',
     totalLabel: 'Total',
     deliveryToSelectedAddress: 'Ship to selected address',
     changeAddress: 'Change address',
@@ -711,6 +912,13 @@ const en: Messages = {
     unit: 'Unit',
     confirmAndContinue: 'Confirm and continue',
     noCityOptions: 'No options',
+    paymentIncomplete: 'Please complete your payment details.',
+    confirmationTitle: 'Order placed',
+    confirmationDescription:
+      'Your order was placed successfully. You can track it in your orders.',
+    confirmationOrderId: 'Order number',
+    viewOrders: 'View orders',
+    confirmationContinueShopping: 'Continue shopping',
   },
   productsListing: {
     allEyebrow: 'Store',

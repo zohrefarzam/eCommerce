@@ -60,6 +60,31 @@ export type ProductFacetFilters = {
   storageGb?: number[];
 };
 
+/** Optional admin-managed catalog overlay for storefront listing. */
+export type ProductCatalogContext = {
+  products: ShowcaseProduct[];
+  metaById: Map<string, ProductCatalogMeta>;
+  categorySlugsById: Map<string, readonly string[]>;
+};
+
+function resolveProductMeta(
+  productId: string,
+  ctx?: ProductCatalogContext,
+): ProductCatalogMeta | undefined {
+  return ctx?.metaById.get(productId) ?? productCatalogMetaById[productId];
+}
+
+function resolveCategorySlugs(
+  productId: string,
+  ctx?: ProductCatalogContext,
+): readonly string[] {
+  return (
+    ctx?.categorySlugsById.get(productId) ??
+    productCategorySlugsById[productId] ??
+    []
+  );
+}
+
 /**
  * Stable product id → storefront category slugs (matches `categoryBarItems` / `browseCategories`).
  * Used for MVP listing filters until a real catalog API exists.
@@ -125,13 +150,16 @@ function normalizeSearchText(value: string): string {
 export function filterProductsByQuery(
   products: ShowcaseProduct[],
   query: string | undefined,
+  ctx?: ProductCatalogContext,
 ): ShowcaseProduct[] {
   const q = normalizeSearchText(query ?? '');
   if (!q) return products;
 
   return products.filter((product) => {
     const name = normalizeSearchText(product.name);
-    const brand = normalizeSearchText(getProductMeta(product.id)?.brand ?? '');
+    const brand = normalizeSearchText(
+      resolveProductMeta(product.id, ctx)?.brand ?? '',
+    );
     return name.includes(q) || brand.includes(q);
   });
 }
@@ -161,7 +189,10 @@ export function getProductMeta(
   return productCatalogMetaById[productId];
 }
 
-export function getProductFacets(products: ShowcaseProduct[]): ProductFacets {
+export function getProductFacets(
+  products: ShowcaseProduct[],
+  ctx?: ProductCatalogContext,
+): ProductFacets {
   const brandCounts = new Map<string, number>();
   const storageCounts = new Map<number, number>();
   let priceMin = Infinity;
@@ -172,7 +203,7 @@ export function getProductFacets(products: ShowcaseProduct[]): ProductFacets {
     priceMin = Math.min(priceMin, amount);
     priceMax = Math.max(priceMax, amount);
 
-    const meta = getProductMeta(product.id);
+    const meta = resolveProductMeta(product.id, ctx);
     if (meta?.brand) {
       const slug = slugifyBrand(meta.brand);
       brandCounts.set(slug, (brandCounts.get(slug) ?? 0) + 1);
@@ -189,7 +220,7 @@ export function getProductFacets(products: ShowcaseProduct[]): ProductFacets {
     .map(([slug, count]) => {
       const label =
         [...products]
-          .map((p) => getProductMeta(p.id))
+          .map((p) => resolveProductMeta(p.id, ctx))
           .find((m) => m && slugifyBrand(m.brand) === slug)?.brand ?? slug;
       return { slug, label, count };
     })
@@ -214,6 +245,7 @@ export function getProductFacets(products: ShowcaseProduct[]): ProductFacets {
 export function applyFacetFilters(
   products: ShowcaseProduct[],
   filters: ProductFacetFilters,
+  ctx?: ProductCatalogContext,
 ): ShowcaseProduct[] {
   const brandSet =
     filters.brands && filters.brands.length > 0
@@ -229,7 +261,7 @@ export function applyFacetFilters(
     if (filters.priceMin != null && amount < filters.priceMin) return false;
     if (filters.priceMax != null && amount > filters.priceMax) return false;
 
-    const meta = getProductMeta(product.id);
+    const meta = resolveProductMeta(product.id, ctx);
     if (brandSet) {
       if (!meta || !brandSet.has(slugifyBrand(meta.brand))) return false;
     }
@@ -401,15 +433,23 @@ export function getProductsForCategory(
 export function getFilteredProducts(
   landing: LandingContent,
   filters: { categorySlug?: string; tabId?: ProductTabId },
+  ctx?: ProductCatalogContext,
 ): ShowcaseProduct[] {
   const activeTab =
     filters.tabId && isValidProductTab(landing, filters.tabId)
       ? filters.tabId
       : undefined;
 
-  let products = activeTab
-    ? [...landing.productsByTab[activeTab]]
-    : mergeUniqueProducts(landing);
+  let products = ctx
+    ? [...ctx.products]
+    : activeTab
+      ? [...landing.productsByTab[activeTab]]
+      : mergeUniqueProducts(landing);
+
+  if (activeTab && ctx) {
+    const tabIds = new Set(landing.productsByTab[activeTab].map((p) => p.id));
+    products = products.filter((p) => tabIds.has(p.id));
+  }
 
   const activeCategory =
     filters.categorySlug && isValidCategorySlug(landing, filters.categorySlug)
@@ -418,7 +458,7 @@ export function getFilteredProducts(
 
   if (activeCategory) {
     products = products.filter((p) =>
-      productCategorySlugsById[p.id]?.includes(activeCategory),
+      resolveCategorySlugs(p.id, ctx).includes(activeCategory),
     );
   }
 
@@ -436,14 +476,19 @@ export function getListingProducts(
     pageSize?: number;
     q?: string;
   },
+  ctx?: ProductCatalogContext,
 ) {
-  const base = getFilteredProducts(landing, {
-    categorySlug: options.categorySlug,
-    tabId: options.tabId,
-  });
-  const searched = filterProductsByQuery(base, options.q);
-  const facets = getProductFacets(searched);
-  const filtered = applyFacetFilters(searched, options.facetFilters ?? {});
+  const base = getFilteredProducts(
+    landing,
+    {
+      categorySlug: options.categorySlug,
+      tabId: options.tabId,
+    },
+    ctx,
+  );
+  const searched = filterProductsByQuery(base, options.q, ctx);
+  const facets = getProductFacets(searched, ctx);
+  const filtered = applyFacetFilters(searched, options.facetFilters ?? {}, ctx);
   const sorted = sortProducts(filtered, options.sort ?? 'rating');
   const paginated = paginateProducts(
     sorted,

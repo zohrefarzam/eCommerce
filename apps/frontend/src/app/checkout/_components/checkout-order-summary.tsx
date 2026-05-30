@@ -20,6 +20,7 @@ type CheckoutOrderSummaryProps = {
   locale: Locale;
   labels: Messages['checkout'];
   shippingMethodId: ShippingMethodId;
+  scheduledDeliveryDate?: string | null;
   address?: CheckoutAddress | null;
   shippingLabel?: string;
   showReview?: boolean;
@@ -31,12 +32,17 @@ export function CheckoutOrderSummary({
   locale,
   labels,
   shippingMethodId,
+  scheduledDeliveryDate,
   address,
   shippingLabel,
   showReview,
   className,
 }: CheckoutOrderSummaryProps) {
-  const summary = getCartOrderSummary(items, locale, { shippingMethodId });
+  const summary = getCartOrderSummary(items, locale, {
+    shippingMethodId,
+    scheduledDeliveryDate,
+    includeCheckoutFees: true,
+  });
 
   return (
     <aside
@@ -104,11 +110,30 @@ export function CheckoutOrderSummary({
           locale={locale}
         />
         <Row label={labels.taxLabel} value={summary.tax} locale={locale} />
-        <Row
-          label={labels.shippingLabel}
-          value={summary.shipping}
-          locale={locale}
-        />
+        {summary.methodShipping > 0 ? (
+          <Row
+            label={labels.shippingLabel}
+            value={summary.methodShipping}
+            locale={locale}
+          />
+        ) : null}
+        {summary.sellerShipmentFee > 0 ? (
+          <Row
+            label={labels.sellerShipmentFeeLabel}
+            value={summary.sellerShipmentFee}
+            locale={locale}
+          />
+        ) : null}
+        {summary.deliveryScheduleFee > 0 ? (
+          <Row
+            label={labels.deliveryScheduleFeeLabel}
+            value={summary.deliveryScheduleFee}
+            locale={locale}
+          />
+        ) : null}
+        {summary.shipping === 0 ? (
+          <Row label={labels.shippingLabel} value={0} locale={locale} />
+        ) : null}
       </dl>
 
       <div className="mt-4 flex items-baseline justify-between border-t border-muted/20 pt-4">
