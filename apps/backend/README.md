@@ -1,9 +1,5 @@
-# Backend (NestJS)
+# Backend
 
-Run in dev mode:
+Reserved for a future API. Stack and tooling are not chosen yet.
 
-```bash
-npm run start:dev
-```
-
-The API starts on `http://localhost:3001` by default.
+When you pick a framework, scaffold it here and add a `package.json` so the app is included in the pnpm workspace (`apps/*`).

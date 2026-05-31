@@ -1,12 +1,12 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AddAddressModal } from '@/app/checkout/_components/add-address-modal';
+import { useCheckoutAddresses } from '@/app/checkout/_hooks/use-checkout-addresses';
 import { Button } from '@/components/base/button';
 import { useLocale } from '@/i18n';
 import type { CheckoutAddress } from '@/app/checkout/_lib/checkout-data';
-import { useCheckoutStore } from '@/app/checkout/_lib/checkout-store';
 import { ProfileContentCard } from '../_components/profile-shell';
 import { AddressCard } from './_components/address-card';
 
@@ -15,18 +15,17 @@ export function ProfileAddressesPage() {
   const labels = messages.account;
   const checkoutLabels = messages.checkout;
 
-  const addresses = useCheckoutStore((s) => s.addresses);
-  const hydrateDefaults = useCheckoutStore((s) => s.hydrateDefaults);
-  const addAddress = useCheckoutStore((s) => s.addAddress);
-  const updateAddress = useCheckoutStore((s) => s.updateAddress);
-  const removeAddress = useCheckoutStore((s) => s.removeAddress);
+  const {
+    addresses,
+    addAddress,
+    updateAddress,
+    removeAddress,
+    isLoading,
+    isError,
+  } = useCheckoutAddresses();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<CheckoutAddress | null>(null);
-
-  useEffect(() => {
-    hydrateDefaults(locale);
-  }, [hydrateDefaults, locale]);
 
   const openAdd = () => {
     setEditing(null);
@@ -76,7 +75,15 @@ export function ProfileAddressesPage() {
               {labels.myAddressesSection}
             </h2>
 
-            {addresses.length === 0 ? (
+            {isLoading ? (
+              <div className="mt-6 flex justify-center py-8">
+                <div className="size-8 animate-pulse rounded-full bg-surface-secondary" />
+              </div>
+            ) : isError ? (
+              <p className="mt-6 text-center text-sm text-muted">
+                {checkoutLabels.addressesLoadError}
+              </p>
+            ) : addresses.length === 0 ? (
               <p className="mt-6 text-center text-sm text-muted">
                 {labels.addressesEmpty}
               </p>

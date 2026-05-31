@@ -13,6 +13,7 @@ import { getCartOrderSummary } from '@/app/cart/_lib/cart-utils';
 import { useCheckoutOrdersStore } from '@/app/checkout/_lib/checkout-orders-store';
 import { isPaymentStepComplete } from '@/app/checkout/_lib/checkout-validation';
 import { useAuth } from '@/providers/auth-provider';
+import { useCheckoutAddresses } from '@/app/checkout/_hooks/use-checkout-addresses';
 import {
   getDeliveryTimeSlots,
   getScheduledDateLabel,
@@ -20,8 +21,8 @@ import {
 } from '@/app/checkout/_lib/checkout-data';
 import {
   clampCheckoutStep,
+  getSelectedAddress,
   isCheckoutComplete,
-  selectSelectedAddress,
   useCheckoutStore,
   type CheckoutStep,
 } from '@/app/checkout/_lib/checkout-store';
@@ -52,14 +53,17 @@ export function CheckoutPageContent() {
 
   const step = useCheckoutStore((s) => s.step);
   const setStep = useCheckoutStore((s) => s.setStep);
-  const hydrateDefaults = useCheckoutStore((s) => s.hydrateDefaults);
-  const syncSelectedAddress = useCheckoutStore((s) => s.syncSelectedAddress);
-  const addresses = useCheckoutStore((s) => s.addresses);
-  const selectedAddressId = useCheckoutStore((s) => s.selectedAddressId);
-  const setSelectedAddressId = useCheckoutStore((s) => s.setSelectedAddressId);
-  const addAddress = useCheckoutStore((s) => s.addAddress);
-  const updateAddress = useCheckoutStore((s) => s.updateAddress);
-  const removeAddress = useCheckoutStore((s) => s.removeAddress);
+  const applyLocaleDefaults = useCheckoutStore((s) => s.applyLocaleDefaults);
+  const {
+    addresses,
+    selectedAddressId,
+    setSelectedAddressId,
+    addAddress,
+    updateAddress,
+    removeAddress,
+    isLoading: addressesLoading,
+    isError: addressesError,
+  } = useCheckoutAddresses();
   const shippingMethodId = useCheckoutStore((s) => s.shippingMethodId);
   const scheduledDeliveryDate = useCheckoutStore(
     (s) => s.scheduledDeliveryDate,
@@ -77,8 +81,9 @@ export function CheckoutPageContent() {
   const placeOrder = useCheckoutOrdersStore((s) => s.placeOrder);
 
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const selectedAddress = useCheckoutStore(selectSelectedAddress);
+  const selectedAddress = getSelectedAddress(addresses, selectedAddressId);
 
   const progressState = useMemo(
     () => ({
@@ -103,13 +108,8 @@ export function CheckoutPageContent() {
   }, [isReady, isAuthenticated, returnUrl, router]);
 
   useEffect(() => {
-    hydrateDefaults(locale);
-    syncSelectedAddress();
-  }, [hydrateDefaults, locale, syncSelectedAddress]);
-
-  useEffect(() => {
-    syncSelectedAddress();
-  }, [addresses, syncSelectedAddress]);
+    applyLocaleDefaults(locale);
+  }, [applyLocaleDefaults, locale]);
 
   useEffect(() => {
     if (!scheduledDeliveryDate?.includes('|')) return;
@@ -193,11 +193,13 @@ export function CheckoutPageContent() {
     isPaymentStepComplete(paymentMethodId, payment, locale);
 
   const handlePay = () => {
-    if (!canCompleteCheckout || !selectedAddress) return;
+    if (isSubmitting || !canCompleteCheckout || !selectedAddress) return;
     if (!isPaymentStepComplete(paymentMethodId, payment, locale)) {
       setPaymentError(labels.paymentIncomplete);
       return;
     }
+
+    setIsSubmitting(true);
 
     const summary = getCartOrderSummary(cartItems, locale, {
       shippingMethodId,
@@ -281,19 +283,31 @@ export function CheckoutPageContent() {
           <CheckoutStepper currentStep={step} steps={stepperSteps} />
 
           {step === 1 ? (
-            <AddressStep
-              locale={locale}
-              labels={labels}
-              addresses={addresses}
-              selectedAddressId={selectedAddressId}
-              onSelect={setSelectedAddressId}
-              onAdd={addAddress}
-              onUpdate={updateAddress}
-              onRemove={removeAddress}
-              scheduledDeliveryDate={scheduledDeliveryDate}
-              onSelectDate={setScheduledDeliveryDate}
-              onNext={() => goToStep(2)}
-            />
+            addressesLoading ? (
+              <div className="flex flex-col items-center gap-4 py-16 text-center">
+                <div className="size-8 animate-pulse rounded-full bg-surface-secondary" />
+              </div>
+            ) : addressesError ? (
+              <div className="flex flex-col items-center gap-4 py-16 text-center">
+                <p className="max-w-md text-sm text-muted">
+                  {labels.addressesLoadError}
+                </p>
+              </div>
+            ) : (
+              <AddressStep
+                locale={locale}
+                labels={labels}
+                addresses={addresses}
+                selectedAddressId={selectedAddressId}
+                onSelect={setSelectedAddressId}
+                onAdd={addAddress}
+                onUpdate={updateAddress}
+                onRemove={removeAddress}
+                scheduledDeliveryDate={scheduledDeliveryDate}
+                onSelectDate={setScheduledDeliveryDate}
+                onNext={() => goToStep(2)}
+              />
+            )
           ) : null}
 
           {step === 2 ? (
@@ -325,7 +339,7 @@ export function CheckoutPageContent() {
               onPaymentFieldChange={handlePaymentFieldChange}
               onBack={() => goToStep(2)}
               onPay={handlePay}
-              payDisabled={!canPay}
+              payDisabled={!canPay || isSubmitting}
               paymentError={paymentError}
             />
           ) : null}

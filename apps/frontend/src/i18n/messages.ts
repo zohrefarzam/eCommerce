@@ -49,6 +49,7 @@ export type Messages = {
     addressesTitle: string;
     favoritesTitle: string;
     ordersEmpty: string;
+    ordersLoadError: string;
     favoritesEmpty: string;
     addressesEmpty: string;
     manageAddresses: string;
@@ -284,6 +285,7 @@ export type Messages = {
     confirmAndContinue: string;
     noCityOptions: string;
     paymentIncomplete: string;
+    addressesLoadError: string;
     confirmationTitle: string;
     confirmationDescription: string;
     confirmationOrderId: string;
@@ -379,6 +381,7 @@ const fa: Messages = {
     addressesTitle: 'آدرس‌های من',
     favoritesTitle: 'علاقه‌مندی‌های من',
     ordersEmpty: 'هنوز سفارشی ثبت نکرده‌اید.',
+    ordersLoadError: 'بارگذاری سفارش‌ها ناموفق بود. لطفاً دوباره تلاش کنید.',
     favoritesEmpty: 'هنوز محصولی به علاقه‌مندی‌ها اضافه نکرده‌اید.',
     addressesEmpty: 'آدرسی ذخیره نشده است.',
     manageAddresses: 'مدیریت آدرس‌ها در تسویه حساب',
@@ -621,6 +624,7 @@ const fa: Messages = {
     confirmAndContinue: 'تایید و ادامه',
     noCityOptions: 'بدون گزینه',
     paymentIncomplete: 'لطفاً اطلاعات پرداخت را کامل کنید.',
+    addressesLoadError: 'بارگذاری آدرس‌ها ناموفق بود. لطفاً دوباره تلاش کنید.',
     confirmationTitle: 'سفارش شما ثبت شد',
     confirmationDescription:
       'سفارش با موفقیت ثبت شد. جزئیات را در بخش سفارش‌ها می‌توانید ببینید.',
@@ -722,6 +726,7 @@ const en: Messages = {
     addressesTitle: 'My addresses',
     favoritesTitle: 'My favorites',
     ordersEmpty: 'You have not placed any orders yet.',
+    ordersLoadError: 'Could not load orders. Please try again.',
     favoritesEmpty: 'You have not added any favorites yet.',
     addressesEmpty: 'No saved addresses yet.',
     manageAddresses: 'Manage addresses at checkout',
@@ -966,6 +971,7 @@ const en: Messages = {
     confirmAndContinue: 'Confirm and continue',
     noCityOptions: 'No options',
     paymentIncomplete: 'Please complete your payment details.',
+    addressesLoadError: 'Could not load addresses. Please try again.',
     confirmationTitle: 'Order placed',
     confirmationDescription:
       'Your order was placed successfully. You can track it in your orders.',

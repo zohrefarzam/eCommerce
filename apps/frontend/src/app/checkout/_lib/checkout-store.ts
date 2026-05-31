@@ -4,12 +4,10 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Locale } from '@/i18n/config';
 import {
-  createDefaultAddresses,
   getDeliveryTimeSlots,
   getScheduledDateOptions,
   getShippingPrice,
   type CheckoutAddress,
-  type CheckoutAddressInput,
   type PaymentMethodId,
   type ShippingMethodId,
 } from '@/app/checkout/_lib/checkout-data';
@@ -26,7 +24,6 @@ export type PaymentDetails = {
 
 type CheckoutState = {
   step: CheckoutStep;
-  addresses: CheckoutAddress[];
   selectedAddressId: string | null;
   shippingMethodId: ShippingMethodId;
   scheduledDeliveryDate: string | null;
@@ -35,10 +32,7 @@ type CheckoutState = {
   setStep: (step: CheckoutStep) => void;
   nextStep: () => void;
   prevStep: () => void;
-  setSelectedAddressId: (id: string) => void;
-  addAddress: (input: CheckoutAddressInput) => string;
-  updateAddress: (id: string, input: CheckoutAddressInput) => void;
-  removeAddress: (id: string) => void;
+  setSelectedAddressId: (id: string | null) => void;
   setShippingMethodId: (id: ShippingMethodId, locale?: Locale) => void;
   setScheduledDeliveryDate: (date: string | null) => void;
   setPaymentMethodId: (id: PaymentMethodId) => void;
@@ -47,8 +41,7 @@ type CheckoutState = {
     value: PaymentDetails[K],
   ) => void;
   resetCheckout: (locale?: Locale) => void;
-  hydrateDefaults: (locale: Locale) => void;
-  syncSelectedAddress: () => void;
+  applyLocaleDefaults: (locale: Locale) => void;
 };
 
 const defaultPayment: PaymentDetails = {
@@ -59,7 +52,7 @@ const defaultPayment: PaymentDetails = {
   billingSameAsShipping: true,
 };
 
-type CheckoutProgressState = {
+export type CheckoutProgressState = {
   addresses: CheckoutAddress[];
   selectedAddressId: string | null;
   shippingMethodId: ShippingMethodId;
@@ -122,7 +115,7 @@ export function getDefaultScheduledDeliveryDate(locale: Locale): string | null {
   return `${dateId}|${slotId}`;
 }
 
-function resolveSelectedAddressId(
+export function resolveSelectedAddressId(
   addresses: CheckoutAddress[],
   selectedAddressId: string | null,
 ): string | null {
@@ -135,12 +128,17 @@ function resolveSelectedAddressId(
   return addresses[0]?.id ?? null;
 }
 
+export function getSelectedAddress(
+  addresses: CheckoutAddress[],
+  selectedAddressId: string | null,
+): CheckoutAddress | null {
+  return addresses.find((a) => a.id === selectedAddressId) ?? null;
+}
+
 function createInitialState(locale: Locale = 'fa') {
-  const addresses = createDefaultAddresses(locale);
   return {
     step: 1 as CheckoutStep,
-    addresses,
-    selectedAddressId: addresses[0]?.id ?? null,
+    selectedAddressId: null as string | null,
     shippingMethodId: 'scheduled' as ShippingMethodId,
     scheduledDeliveryDate: null as string | null,
     paymentMethodId: (locale === 'fa' ? 'online' : 'card') as PaymentMethodId,
@@ -167,36 +165,6 @@ export const useCheckoutStore = create<CheckoutState>()(
 
       setSelectedAddressId: (id) => set({ selectedAddressId: id }),
 
-      addAddress: (input) => {
-        const id = `addr-${Date.now()}`;
-        const next: CheckoutAddress = { id, ...input };
-        set({
-          addresses: [...get().addresses, next],
-          selectedAddressId: id,
-        });
-        return id;
-      },
-
-      updateAddress: (id, input) => {
-        set({
-          addresses: get().addresses.map((a) =>
-            a.id === id ? { ...a, ...input, id } : a,
-          ),
-        });
-      },
-
-      removeAddress: (id) => {
-        const remaining = get().addresses.filter((a) => a.id !== id);
-        const selected =
-          get().selectedAddressId === id
-            ? (remaining[0]?.id ?? null)
-            : get().selectedAddressId;
-        set({
-          addresses: remaining,
-          selectedAddressId: resolveSelectedAddressId(remaining, selected),
-        });
-      },
-
       setShippingMethodId: (id, _locale?: Locale) => {
         set({ shippingMethodId: id });
       },
@@ -211,39 +179,28 @@ export const useCheckoutStore = create<CheckoutState>()(
 
       resetCheckout: (locale = 'fa') => set(createInitialState(locale)),
 
-      hydrateDefaults: (locale) => {
-        const current = get();
-        if (current.addresses.length > 0) return;
-        const addresses = createDefaultAddresses(locale);
-        set({
-          addresses,
-          selectedAddressId: resolveSelectedAddressId(
-            addresses,
-            addresses[0]?.id ?? null,
-          ),
-          paymentMethodId: locale === 'fa' ? 'online' : 'card',
-        });
-      },
-
-      syncSelectedAddress: () => {
-        const { addresses, selectedAddressId } = get();
-        const resolved = resolveSelectedAddressId(addresses, selectedAddressId);
-        if (resolved !== selectedAddressId) {
-          set({ selectedAddressId: resolved });
-        }
+      applyLocaleDefaults: (locale) => {
+        set({ paymentMethodId: locale === 'fa' ? 'online' : 'card' });
       },
     }),
     {
       name: 'storefront-checkout',
+      version: 1,
       partialize: (state) => ({
         step: state.step,
-        addresses: state.addresses,
         selectedAddressId: state.selectedAddressId,
         shippingMethodId: state.shippingMethodId,
         scheduledDeliveryDate: state.scheduledDeliveryDate,
         paymentMethodId: state.paymentMethodId,
         billingSameAsShipping: state.payment.billingSameAsShipping,
       }),
+      migrate: (persisted) => {
+        const saved = persisted as Partial<CheckoutState> & {
+          addresses?: unknown;
+        };
+        const { addresses: _addresses, ...rest } = saved;
+        return { ...createInitialState('fa'), ...rest };
+      },
       merge: (persisted, current) => {
         const saved = persisted as Partial<CheckoutState> & {
           billingSameAsShipping?: boolean;
@@ -266,12 +223,6 @@ export const useCheckoutStore = create<CheckoutState>()(
     },
   ),
 );
-
-export function selectSelectedAddress(
-  state: CheckoutState,
-): CheckoutAddress | null {
-  return state.addresses.find((a) => a.id === state.selectedAddressId) ?? null;
-}
 
 export function getCheckoutShippingCost(
   shippingMethodId: ShippingMethodId,
