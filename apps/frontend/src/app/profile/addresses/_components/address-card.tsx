@@ -9,8 +9,8 @@ import type { Messages } from '@/i18n/messages';
 import {
   formatAddressOneLine,
   type CheckoutAddress,
-} from '@/lib/checkout-data';
-import { cn } from '@/lib/utils';
+} from '@/app/checkout/_lib/checkout-data';
+import { cn } from '@/components/base/_lib/utils';
 
 type AddressCardProps = {
   address: CheckoutAddress;

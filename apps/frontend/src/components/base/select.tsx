@@ -7,7 +7,7 @@ import {
   type SelectProps as HeroUISelectProps,
 } from '@heroui/react';
 import { type Key, type ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 
 export type SelectOption<K extends Key = string> = {
   id: K;

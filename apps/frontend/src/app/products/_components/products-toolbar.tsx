@@ -1,8 +1,8 @@
 'use client';
 
 import { Select } from '@/components/base/select';
-import type { ProductSortId } from '@/lib/product-catalog';
-import { cn } from '@/lib/utils';
+import type { ProductSortId } from '@/app/products/_lib/product-catalog';
+import { cn } from '@/components/base/_lib/utils';
 
 type SortOption = { id: ProductSortId; label: string };
 

@@ -2,10 +2,10 @@
 
 import type { Messages } from '@/i18n/messages';
 import type { Locale } from '@/i18n/config';
-import { type ShippingMethodId } from '@/lib/checkout-data';
+import { type ShippingMethodId } from '@/app/checkout/_lib/checkout-data';
 import { Radio } from '@/components/base/radio';
 import { RadioGroup } from '@/components/base/radio-group';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 import { CheckoutNavButtons } from './checkout-nav-buttons';
 
 type ShippingStepProps = {

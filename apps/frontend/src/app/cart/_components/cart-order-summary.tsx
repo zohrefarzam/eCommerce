@@ -5,9 +5,12 @@ import { Button } from '@/components/base/button';
 import { Input } from '@/components/base/input';
 import { CheckoutAuthButton } from '@/components/ui/checkout-auth-button';
 import type { Locale } from '@/i18n/config';
-import { formatCartMoney, getCartOrderSummary } from '@/lib/cart-utils';
-import type { CartLineItem } from '@/lib/cart-store';
-import { cn } from '@/lib/utils';
+import {
+  formatCartMoney,
+  getCartOrderSummary,
+} from '@/app/cart/_lib/cart-utils';
+import type { CartLineItem } from '@/app/cart/_lib/cart-store';
+import { cn } from '@/components/base/_lib/utils';
 
 type CartOrderSummaryCardProps = {
   items: readonly CartLineItem[];

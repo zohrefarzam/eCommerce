@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { getLandingContent } from '@/landing/_content';
 import { getLocaleFromCookie, getMessages } from '@/i18n';
-import { getProductDetail } from '@/lib/product-detail';
+import { getProductDetail } from '@/app/products/_lib/product-detail';
 import { ProductDetailView } from './product-detail-view';
 
 type ProductDetailPageProps = {

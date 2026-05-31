@@ -19,7 +19,7 @@ import type { Messages } from '@/i18n/messages';
 import type {
   CheckoutAddress,
   CheckoutAddressInput,
-} from '@/lib/checkout-data';
+} from '@/app/checkout/_lib/checkout-data';
 
 type AddAddressModalProps = {
   isOpen: boolean;

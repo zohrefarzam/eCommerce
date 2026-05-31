@@ -7,7 +7,7 @@ import { CategoryNavBar } from '@/landing/_components/layout/category-nav-bar';
 import { SiteFooter } from '@/landing/_components/layout/site-footer';
 import { SiteShell } from '@/landing/_components/layout/site-shell';
 import { useLocale } from '@/i18n';
-import { useCartStore } from '@/lib/cart-store';
+import { useCartStore } from '@/app/cart/_lib/cart-store';
 import { CartOrderSummaryCard } from './_components/cart-order-summary';
 
 export function CartPageContent() {

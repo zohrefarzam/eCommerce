@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { AddAddressModal } from '@/app/checkout/_components/add-address-modal';
 import { Button } from '@/components/base/button';
 import { useLocale } from '@/i18n';
-import type { CheckoutAddress } from '@/lib/checkout-data';
-import { useCheckoutStore } from '@/lib/checkout-store';
+import type { CheckoutAddress } from '@/app/checkout/_lib/checkout-data';
+import { useCheckoutStore } from '@/app/checkout/_lib/checkout-store';
 import { ProfileContentCard } from '../_components/profile-shell';
 import { AddressCard } from './_components/address-card';
 

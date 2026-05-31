@@ -4,9 +4,12 @@ import { Icon } from '@iconify/react';
 import { useEffect, useMemo, useState } from 'react';
 import { Select } from '@/components/base/select';
 import { useLocale } from '@/i18n';
-import { useCheckoutOrdersStore } from '@/lib/checkout-orders-store';
-import { useAdminOrdersStore } from '@/lib/admin-orders-store';
-import { getProfileOrders, type OrderStatus } from '@/lib/profile-orders-data';
+import { useCheckoutOrdersStore } from '@/app/checkout/_lib/checkout-orders-store';
+import { useAdminOrdersStore } from '@/app/admin/_lib/admin-orders-store';
+import {
+  getProfileOrders,
+  type OrderStatus,
+} from '@/app/profile/_lib/profile-orders-data';
 import { AdminContentCard } from '../_components/admin-shell';
 
 const ORDER_STATUSES: OrderStatus[] = [

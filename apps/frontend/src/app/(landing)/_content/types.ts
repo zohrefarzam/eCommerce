@@ -1,4 +1,4 @@
-import type { ImageSource } from '@/lib/image-source';
+import type { ImageSource } from '@/components/base/_lib/image-source';
 
 export type ProductTabId = 'new' | 'bestseller' | 'featured';
 

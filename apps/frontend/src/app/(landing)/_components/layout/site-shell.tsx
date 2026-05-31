@@ -1,7 +1,7 @@
 import { Children, Fragment } from 'react';
 import { SectionDivider } from '@/landing/_components/ui/section-divider';
-import { STOREFRONT_CONTENT_FRAME } from '@/lib/storefront-layout';
-import { cn } from '@/lib/utils';
+import { STOREFRONT_CONTENT_FRAME } from '@/app/(landing)/_lib/storefront-layout';
+import { cn } from '@/components/base/_lib/utils';
 
 type SiteShellProps = {
   children: React.ReactNode;

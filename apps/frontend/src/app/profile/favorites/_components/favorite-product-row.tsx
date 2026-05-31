@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { Button } from '@/components/base/button';
 import { Image } from '@/components/base/image';
 import type { Messages } from '@/i18n/messages';
-import type { FavoriteProduct } from '@/lib/favorites-store';
-import { useFavoritesStore } from '@/lib/favorites-store';
-import { productDetailHref } from '@/lib/product-detail';
-import { cn } from '@/lib/utils';
+import type { FavoriteProduct } from '@/app/profile/_lib/favorites-store';
+import { useFavoritesStore } from '@/app/profile/_lib/favorites-store';
+import { productDetailHref } from '@/app/products/_lib/product-detail';
+import { cn } from '@/components/base/_lib/utils';
 
 type FavoriteProductRowProps = {
   item: FavoriteProduct;

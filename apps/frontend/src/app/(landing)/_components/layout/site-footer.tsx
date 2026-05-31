@@ -3,7 +3,7 @@
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { useLandingContent } from '@/i18n';
-import { STOREFRONT_CONTENT_FRAME } from '@/lib/storefront-layout';
+import { STOREFRONT_CONTENT_FRAME } from '@/app/(landing)/_lib/storefront-layout';
 
 export function SiteFooter() {
   const { footerContent } = useLandingContent();

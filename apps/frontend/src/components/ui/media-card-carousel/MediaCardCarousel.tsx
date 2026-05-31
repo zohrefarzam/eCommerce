@@ -11,7 +11,7 @@ import {
 } from 'motion/react';
 import { Button } from '@heroui/react';
 import { Image } from '@/components/base/image';
-import type { ImageSource } from '@/lib/image-source';
+import type { ImageSource } from '@/components/base/_lib/image-source';
 import './MediaCardCarousel.css';
 
 export type MediaCardCarouselItem = {

@@ -5,8 +5,8 @@ import headphoneProduct from '@/assets/images/products/headphone.png';
 import speakerProduct from '@/assets/images/products/speaker.png';
 import palystaytionProduct from '@/assets/images/products/palystaytion.png';
 import headphone2Product from '@/assets/images/products/headphone2.png';
-import type { ImageSource } from '@/lib/image-source';
-import { hiResRemoteImageUrl } from '@/lib/image-source';
+import type { ImageSource } from '@/components/base/_lib/image-source';
+import { hiResRemoteImageUrl } from '@/components/base/_lib/image-source';
 
 const unsplash = (id: string, width = 800) =>
   hiResRemoteImageUrl(`https://images.unsplash.com/${id}`, width, 90);

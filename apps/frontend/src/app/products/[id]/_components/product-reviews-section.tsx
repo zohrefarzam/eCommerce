@@ -5,12 +5,12 @@ import { Icon } from '@iconify/react';
 import { Button } from '@/components/base/button';
 import { Image } from '@/components/base/image';
 import { Textarea } from '@/components/base/textarea';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 import type {
   ProductReview,
   ProductReviewsData,
   RatingBreakdownItem,
-} from '@/lib/product-reviews';
+} from '@/app/products/_lib/product-reviews';
 
 const INITIAL_VISIBLE = 4;
 const STAR_COLOR = 'text-amber-500';

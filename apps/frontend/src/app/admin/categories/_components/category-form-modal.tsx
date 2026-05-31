@@ -5,7 +5,7 @@ import { AuthField } from '@/app/auth/_components/auth-field';
 import { Button } from '@/components/base/button';
 import { Modal } from '@/components/base/modal';
 import { useLocale } from '@/i18n';
-import type { AdminCategory } from '@/lib/admin-categories-store';
+import type { AdminCategory } from '@/app/admin/_lib/admin-categories-store';
 
 type CategoryFormModalProps = {
   isOpen: boolean;

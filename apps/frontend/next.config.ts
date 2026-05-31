@@ -8,6 +8,12 @@ const appDir = dirname(fileURLToPath(import.meta.url));
 const turbopackRoot = resolve(appDir, '..', '..');
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      { source: '/login', destination: '/auth/login', permanent: true },
+      { source: '/sign-up', destination: '/auth/sign-up', permanent: true },
+    ];
+  },
   turbopack: {
     root: turbopackRoot,
   },

@@ -5,7 +5,7 @@ import {
   type ModalRootProps as HeroUIModalProps,
 } from '@heroui/react';
 import { type ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 
 export type BaseModalProps = Omit<
   HeroUIModalProps,

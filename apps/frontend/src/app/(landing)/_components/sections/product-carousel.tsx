@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useRef, type CSSProperties } from 'react';
 import { Image } from '@/components/base/image';
-import type { ImageSource } from '@/lib/image-source';
-import { useRemountOnReturn } from '@/lib/use-remount-on-return';
+import type { ImageSource } from '@/components/base/_lib/image-source';
+import { useRemountOnReturn } from '@/app/(landing)/_lib/use-remount-on-return';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperClass } from 'swiper';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';

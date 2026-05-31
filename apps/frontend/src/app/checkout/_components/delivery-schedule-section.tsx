@@ -6,16 +6,16 @@ import { RadioGroup } from '@/components/base/radio-group';
 import { Image } from '@/components/base/image';
 import type { Locale } from '@/i18n/config';
 import type { Messages } from '@/i18n/messages';
-import type { CheckoutAddress } from '@/lib/checkout-data';
+import type { CheckoutAddress } from '@/app/checkout/_lib/checkout-data';
 import {
   formatAddressOneLine,
   getDeliveryTimeSlots,
   getScheduledDateOptions,
   getSellerShipmentFee,
-} from '@/lib/checkout-data';
-import type { CartLineItem } from '@/lib/cart-store';
-import { cartLineTitle, formatCartMoney } from '@/lib/cart-utils';
-import { cn } from '@/lib/utils';
+} from '@/app/checkout/_lib/checkout-data';
+import type { CartLineItem } from '@/app/cart/_lib/cart-store';
+import { cartLineTitle, formatCartMoney } from '@/app/cart/_lib/cart-utils';
+import { cn } from '@/components/base/_lib/utils';
 
 type DeliveryScheduleSectionProps = {
   locale: Locale;

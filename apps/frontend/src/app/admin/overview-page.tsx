@@ -3,11 +3,11 @@
 import { Icon } from '@iconify/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocale } from '@/i18n';
-import { useAdminProductsStore } from '@/lib/admin-products-store';
-import { useAdminCategoriesStore } from '@/lib/admin-categories-store';
-import { useAuthStore } from '@/lib/auth-store';
-import { useCheckoutOrdersStore } from '@/lib/checkout-orders-store';
-import { getProfileOrders } from '@/lib/profile-orders-data';
+import { useAdminProductsStore } from '@/app/admin/_lib/admin-products-store';
+import { useAdminCategoriesStore } from '@/app/admin/_lib/admin-categories-store';
+import { useAuthStore } from '@/providers/_lib/auth-store';
+import { useCheckoutOrdersStore } from '@/app/checkout/_lib/checkout-orders-store';
+import { getProfileOrders } from '@/app/profile/_lib/profile-orders-data';
 import { AdminContentCard } from './_components/admin-shell';
 
 type StatCard = {

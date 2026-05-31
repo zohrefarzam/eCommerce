@@ -8,7 +8,11 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useAuthStore, type AuthUser, type UserRole } from '@/lib/auth-store';
+import {
+  useAuthStore,
+  type AuthUser,
+  type UserRole,
+} from '@/providers/_lib/auth-store';
 
 type SignInResult = { ok: true } | { ok: false; error: 'invalid' };
 

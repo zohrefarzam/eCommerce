@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Image } from '@/components/base/image';
-import type { ImageSource } from '@/lib/image-source';
+import type { ImageSource } from '@/components/base/_lib/image-source';
 
 export type FeaturedCategoryCardVariant = 'featured' | 'wide' | 'compact';
 

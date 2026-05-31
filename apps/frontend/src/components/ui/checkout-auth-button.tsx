@@ -24,7 +24,7 @@ export function CheckoutAuthButton({
       router.push('/checkout');
       return;
     }
-    router.push(`/login?returnUrl=${encodeURIComponent('/checkout')}`);
+    router.push(`/auth/login?returnUrl=${encodeURIComponent('/checkout')}`);
   };
 
   return (

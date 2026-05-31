@@ -4,14 +4,14 @@ import { Checkbox } from '@/components/base/checkbox';
 import { Input } from '@/components/base/input';
 import type { Messages } from '@/i18n/messages';
 import type { Locale } from '@/i18n/config';
-import type { PaymentDetails } from '@/lib/checkout-store';
-import type { PaymentMethodId } from '@/lib/checkout-data';
-import { cn } from '@/lib/utils';
+import type { PaymentDetails } from '@/app/checkout/_lib/checkout-store';
+import type { PaymentMethodId } from '@/app/checkout/_lib/checkout-data';
+import { cn } from '@/components/base/_lib/utils';
 import { CheckoutNavButtons } from './checkout-nav-buttons';
 import { CheckoutOrderSummary } from './checkout-order-summary';
-import type { CartLineItem } from '@/lib/cart-store';
-import type { CheckoutAddress } from '@/lib/checkout-data';
-import type { ShippingMethodId } from '@/lib/checkout-data';
+import type { CartLineItem } from '@/app/cart/_lib/cart-store';
+import type { CheckoutAddress } from '@/app/checkout/_lib/checkout-data';
+import type { ShippingMethodId } from '@/app/checkout/_lib/checkout-data';
 
 type PaymentStepProps = {
   locale: Locale;

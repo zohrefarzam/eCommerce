@@ -3,8 +3,8 @@
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { useLandingContent } from '@/i18n';
-import { productsCategoryHref } from '@/lib/product-catalog';
-import { STOREFRONT_CONTENT_FRAME } from '@/lib/storefront-layout';
+import { productsCategoryHref } from '@/app/products/_lib/product-catalog';
+import { STOREFRONT_CONTENT_FRAME } from '@/app/(landing)/_lib/storefront-layout';
 
 const categoryIconBySlug: Record<string, string> = {
   phones: 'lucide:smartphone',

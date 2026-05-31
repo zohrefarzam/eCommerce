@@ -3,17 +3,17 @@
 import { Image } from '@/components/base/image';
 import type { Messages } from '@/i18n/messages';
 import type { Locale } from '@/i18n/config';
-import type { CartLineItem } from '@/lib/cart-store';
-import type { CheckoutAddress } from '@/lib/checkout-data';
-import type { ShippingMethodId } from '@/lib/checkout-data';
+import type { CartLineItem } from '@/app/cart/_lib/cart-store';
+import type { CheckoutAddress } from '@/app/checkout/_lib/checkout-data';
+import type { ShippingMethodId } from '@/app/checkout/_lib/checkout-data';
 import {
   cartLineTitle,
   cartLineUnitAmount,
   formatCartMoney,
   getCartOrderSummary,
-} from '@/lib/cart-utils';
-import { formatAddressOneLine } from '@/lib/checkout-data';
-import { cn } from '@/lib/utils';
+} from '@/app/cart/_lib/cart-utils';
+import { formatAddressOneLine } from '@/app/checkout/_lib/checkout-data';
+import { cn } from '@/components/base/_lib/utils';
 
 type CheckoutOrderSummaryProps = {
   items: readonly CartLineItem[];

@@ -4,9 +4,9 @@ import {
   isRemoteImageUrl,
   sharpenRemoteImageUrl,
   type ImageSource,
-} from '@/lib/image-source';
+} from '@/components/base/_lib/image-source';
 
-export type { ImageSource } from '@/lib/image-source';
+export type { ImageSource } from '@/components/base/_lib/image-source';
 
 export type ImageFit = 'cover' | 'contain';
 

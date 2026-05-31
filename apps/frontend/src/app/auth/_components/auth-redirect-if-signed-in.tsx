@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { sanitizeReturnUrl } from '@/lib/return-url';
+import { sanitizeReturnUrl } from '@/app/auth/_lib/return-url';
 import { useAuth } from '@/providers/auth-provider';
 
 export function AuthRedirectIfSignedIn({

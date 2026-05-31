@@ -6,13 +6,13 @@ import { CategoryNavBar } from '@/landing/_components/layout/category-nav-bar';
 import { SiteFooter } from '@/landing/_components/layout/site-footer';
 import { SiteShell } from '@/landing/_components/layout/site-shell';
 import { useLocale } from '@/i18n';
-import { getProductReviews } from '@/lib/product-reviews';
+import { getProductReviews } from '@/app/products/_lib/product-reviews';
 import {
   getRelatedProducts,
   productsCategoryHref,
   slugifyBrand,
-} from '@/lib/product-catalog';
-import type { ProductDetail } from '@/lib/product-detail';
+} from '@/app/products/_lib/product-catalog';
+import type { ProductDetail } from '@/app/products/_lib/product-detail';
 import {
   ProductsBreadcrumb,
   type BreadcrumbItem,

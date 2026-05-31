@@ -1,5 +1,5 @@
 import type { Locale } from '@/i18n/config';
-import type { ImageSource } from '@/lib/image-source';
+import type { ImageSource } from '@/components/base/_lib/image-source';
 import iphoneBannerFa from '@/assets/images/banner/iphone-banner.png';
 import summerBannerFa from '@/assets/images/banner/summer-banner.png';
 import iphoneBannerEn from '@/assets/images/banner/en/iphone14-en.png';

@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/base/button';
 import { useLocale } from '@/i18n';
-import { sanitizeReturnUrl } from '@/lib/return-url';
+import { sanitizeReturnUrl } from '@/app/auth/_lib/return-url';
 import { useAuth } from '@/providers/auth-provider';
 import { AuthField } from './auth-field';
 
@@ -111,7 +111,7 @@ export function SignUpForm() {
       <p className="text-center text-sm text-muted">
         {labels.alreadyHaveAccount}{' '}
         <Link
-          href={`/login${returnUrl !== '/' ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''}`}
+          href={`/auth/login${returnUrl !== '/' ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''}`}
           className="font-medium text-foreground underline underline-offset-4"
           prefetch={false}
         >

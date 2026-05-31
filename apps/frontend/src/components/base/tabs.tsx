@@ -7,7 +7,7 @@ import {
   type TabPanelProps,
   type TabProps,
 } from '@heroui/react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 
 export type BaseTabsProps = HeroUITabsRootProps;
 

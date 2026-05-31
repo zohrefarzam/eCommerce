@@ -11,7 +11,7 @@ import type {
   BrandFacet,
   ProductFacets,
   StorageFacet,
-} from '@/lib/product-catalog';
+} from '@/app/products/_lib/product-catalog';
 
 export type ProductsFilterValues = {
   priceMin?: number;

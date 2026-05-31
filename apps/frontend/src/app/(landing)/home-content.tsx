@@ -12,7 +12,7 @@ import { ServiceHighlights } from '@/landing/_components/sections/service-highli
 import { ProductShowcase } from '@/landing/_components/sections/product-showcase';
 import { useLandingContent, useLocale } from '@/i18n';
 import { getCarouselBanners } from '@/landing/_content/carousel-banners';
-import { productsTabHref } from '@/lib/product-catalog';
+import { productsTabHref } from '@/app/products/_lib/product-catalog';
 
 export function HomeContent() {
   const { locale } = useLocale();

@@ -15,7 +15,7 @@ export const faLandingContent: LandingContent = {
     { href: '/blog', label: 'وبلاگ' },
   ],
   footerContent: {
-    brand: 'هوشمندسازان',
+    brand: 'رهپویان',
     tagline: 'فروشگاه آنلاین محصولات دیجیتال با ارسال سریع و ضمانت اصالت کالا.',
     columns: [
       {
@@ -39,7 +39,7 @@ export const faLandingContent: LandingContent = {
     ],
     contact: {
       phone: '۰۲۱-۱۲۳۴۵۶۷۸',
-      email: 'info@hooshmandsazan.ir',
+      email: 'info@rahpooyan.ir',
       address: 'تهران، خیابان ولیعصر',
     },
     social: [
@@ -59,7 +59,7 @@ export const faLandingContent: LandingContent = {
       { href: '/terms', label: 'قوانین و مقررات' },
       { href: '/privacy', label: 'حریم خصوصی' },
     ],
-    copyright: '© ۱۴۰۵ هوشمندسازان. تمامی حقوق محفوظ است.',
+    copyright: '© ۱۴۰۵ رهپویان. تمامی حقوق محفوظ است.',
   },
   categoryBarItems: [
     { slug: 'phones', label: 'موبایل' },
@@ -307,7 +307,7 @@ export const faLandingContent: LandingContent = {
         'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=1200&auto=format&fit=crop&q=80',
       imageAlt: 'پلی‌استیشن ۵',
       cta: 'مشاهده',
-      href: '/category/gaming',
+      href: '/products/category/gaming',
     },
     {
       id: 'macbook',
@@ -328,7 +328,7 @@ export const faLandingContent: LandingContent = {
       image: headphoneProduct.src,
       imageAlt: 'Glaxy buds',
       cta: 'خرید',
-      href: '/category/headphones',
+      href: '/products/category/headphones',
     },
     {
       id: 'watch',
@@ -339,7 +339,7 @@ export const faLandingContent: LandingContent = {
         'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
       imageAlt: 'ساعت هوشمند سری ۹',
       cta: 'مشاهده',
-      href: '/category/watches',
+      href: '/products/category/watches',
     },
   ],
   newArrivalSection: {
@@ -354,7 +354,7 @@ export const faLandingContent: LandingContent = {
       description: 'کنسول‌ها، لوازم جانبی و تجهیزات حرفه‌ای بازی.',
       image: palystaytionProduct,
       imageAlt: 'کنسول بازی',
-      href: '/category/gaming',
+      href: '/products/category/gaming',
     },
     {
       slug: 'phones',
@@ -363,7 +363,7 @@ export const faLandingContent: LandingContent = {
       image:
         'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=1400&auto=format&fit=crop&q=90',
       imageAlt: 'گوشی هوشمند',
-      href: '/category/phones',
+      href: '/products/category/phones',
     },
     {
       slug: 'headphones',
@@ -371,7 +371,7 @@ export const faLandingContent: LandingContent = {
       description: 'هدفون و اسپیکرهای بی‌سیم با کیفیت بالا.',
       image: headphoneProduct,
       imageAlt: 'هدفون بی‌سیم',
-      href: '/category/headphones',
+      href: '/products/category/headphones',
     },
     {
       slug: 'watches',
@@ -379,7 +379,7 @@ export const faLandingContent: LandingContent = {
       description: 'پوشیدنی‌های هوشمند برای سبک زندگی مدرن.',
       image: smartwatchProduct,
       imageAlt: 'ساعت هوشمند',
-      href: '/category/watches',
+      href: '/products/category/watches',
     },
   ],
   serviceHighlights: [

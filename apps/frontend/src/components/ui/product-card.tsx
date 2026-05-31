@@ -5,8 +5,8 @@ import { Button } from '@heroui/react';
 import { Icon } from '@iconify/react';
 import { Image } from '@/components/base/image';
 import { useLocale } from '@/i18n';
-import { useFavoritesStore } from '@/lib/favorites-store';
-import type { ImageSource } from '@/lib/image-source';
+import { useFavoritesStore } from '@/app/profile/_lib/favorites-store';
+import type { ImageSource } from '@/components/base/_lib/image-source';
 
 export type ProductCardProps = {
   productId?: string;

@@ -3,15 +3,15 @@
 import { Icon } from '@iconify/react';
 import { Button } from '@/components/base/button';
 import { Image } from '@/components/base/image';
-import type { CartLineItem } from '@/lib/cart-store';
+import type { CartLineItem } from '@/app/cart/_lib/cart-store';
 import {
   cartLineSku,
   cartLineTitle,
   cartLineUnitAmount,
   formatCartMoney,
-} from '@/lib/cart-utils';
+} from '@/app/cart/_lib/cart-utils';
 import type { Locale } from '@/i18n/config';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 
 export type CartLineItemLabels = {
   removeItem: string;

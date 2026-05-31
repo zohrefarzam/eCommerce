@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { Button } from '@/components/base/button';
-import type { ProductDetailSection } from '@/lib/product-detail';
+import type { ProductDetailSection } from '@/app/products/_lib/product-detail';
 
 type ProductDetailsSectionProps = {
   title: string;

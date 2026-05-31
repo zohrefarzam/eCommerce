@@ -7,7 +7,7 @@ import { Button as HeroUIButton } from '@heroui/react';
 import { Icon } from '@iconify/react';
 import { Button } from '@/components/base/button';
 import { useLandingContent, useLocale } from '@/i18n';
-import { useRemountOnReturn } from '@/lib/use-remount-on-return';
+import { useRemountOnReturn } from '@/app/(landing)/_lib/use-remount-on-return';
 import CardSwap, { Card } from '@/components/ui/card-swap/CardSwap';
 import {
   MediaCardCarousel,

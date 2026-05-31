@@ -4,12 +4,12 @@ import { Icon } from '@iconify/react';
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/base/button';
 import { useLocale } from '@/i18n';
-import { useAdminCategoriesStore } from '@/lib/admin-categories-store';
+import { useAdminCategoriesStore } from '@/app/admin/_lib/admin-categories-store';
 import {
   useAdminProductsStore,
   type AdminProduct,
   type AdminProductInput,
-} from '@/lib/admin-products-store';
+} from '@/app/admin/_lib/admin-products-store';
 import { AdminContentCard } from '../_components/admin-shell';
 import { AdminConfirmDeleteModal } from '../_components/admin-confirm-delete-modal';
 import { ProductFormModal } from './_components/product-form-modal';

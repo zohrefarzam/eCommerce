@@ -8,9 +8,12 @@ import { CategoryNavBar } from '@/landing/_components/layout/category-nav-bar';
 import { SiteFooter } from '@/landing/_components/layout/site-footer';
 import { SiteShell } from '@/landing/_components/layout/site-shell';
 import type { ShowcaseProduct } from '@/landing/_content/types';
-import type { ProductFacets, ProductSortId } from '@/lib/product-catalog';
-import { addShowcaseProductToCart } from '@/lib/cart-store';
-import { productDetailHref } from '@/lib/product-detail';
+import type {
+  ProductFacets,
+  ProductSortId,
+} from '@/app/products/_lib/product-catalog';
+import { addShowcaseProductToCart } from '@/app/cart/_lib/cart-store';
+import { productDetailHref } from '@/app/products/_lib/product-detail';
 import { ProductsBreadcrumb, type BreadcrumbItem } from './products-breadcrumb';
 import { ProductsFilters, type ProductsFilterValues } from './products-filters';
 import { ProductsListingMobileBar } from './products-listing-mobile-bar';

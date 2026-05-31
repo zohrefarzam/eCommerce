@@ -5,9 +5,13 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useLocale } from '@/i18n';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 import { useAuth } from '@/providers/auth-provider';
-import { PROFILE_NAV } from '@/lib/profile-nav';
+import { PROFILE_NAV } from '@/app/profile/_lib/profile-nav';
+import {
+  selectUnreadCount,
+  useNotificationsStore,
+} from '@/app/profile/_lib/notifications-store';
 import { EditProfileModal } from './edit-profile-modal';
 
 const ACTIVE_BAR = 'border-s-2 border-foreground';
@@ -17,6 +21,7 @@ type ProfileSidebarLinkProps = {
   icon: string;
   label: string;
   isActive: boolean;
+  badgeCount?: number;
 };
 
 function ProfileSidebarLink({
@@ -24,6 +29,7 @@ function ProfileSidebarLink({
   icon,
   label,
   isActive,
+  badgeCount,
 }: ProfileSidebarLinkProps) {
   return (
     <Link
@@ -43,7 +49,12 @@ function ProfileSidebarLink({
         className={cn('shrink-0', isActive ? 'text-foreground' : 'text-muted')}
         aria-hidden
       />
-      <span>{label}</span>
+      <span className="min-w-0 flex-1">{label}</span>
+      {badgeCount && badgeCount > 0 ? (
+        <span className="flex min-w-5 items-center justify-center rounded-full bg-foreground px-1.5 py-0.5 text-[10px] font-bold leading-none text-background">
+          {badgeCount > 99 ? '99+' : badgeCount}
+        </span>
+      ) : null}
     </Link>
   );
 }
@@ -54,6 +65,7 @@ export function ProfileSidebar() {
   const { messages } = useLocale();
   const { user, signOut } = useAuth();
   const labels = messages.account;
+  const unreadCount = useNotificationsStore(selectUnreadCount);
   const [editOpen, setEditOpen] = useState(false);
 
   const handleSignOut = () => {
@@ -92,6 +104,9 @@ export function ProfileSidebar() {
               icon={item.icon}
               label={labels[item.labelKey]}
               isActive={pathname === item.href}
+              badgeCount={
+                item.labelKey === 'notifications' ? unreadCount : undefined
+              }
             />
           ))}
         </nav>

@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@heroui/react';
 import { ProductCard } from '@/components/ui/product-card';
-import { addShowcaseProductToCart } from '@/lib/cart-store';
-import { productDetailHref } from '@/lib/product-detail';
+import { addShowcaseProductToCart } from '@/app/cart/_lib/cart-store';
+import { productDetailHref } from '@/app/products/_lib/product-detail';
 import type { ShowcaseProduct } from '@/landing/_content/types';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';

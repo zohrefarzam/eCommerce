@@ -37,6 +37,7 @@ export type Messages = {
     checkoutLoginRequired: string;
   };
   account: {
+    notifications: string;
     orders: string;
     addresses: string;
     favorites: string;
@@ -75,6 +76,22 @@ export type Messages = {
     editProfileTitle: string;
     saveProfile: string;
     cancel: string;
+  };
+  notifications: {
+    metaTitle: string;
+    pageTitle: string;
+    dropdownTitle: string;
+    viewAll: string;
+    empty: string;
+    markAllRead: string;
+    orderPlacedTitle: string;
+    orderPlacedBody: (orderId: string) => string;
+    orderStatusTitle: string;
+    orderStatusBody: (orderId: string, statusLabel: string) => string;
+    timeJustNow: string;
+    timeMinutes: (count: number) => string;
+    timeHours: (count: number) => string;
+    timeDays: (count: number) => string;
   };
   admin: {
     metaTitle: string;
@@ -350,6 +367,7 @@ const fa: Messages = {
     checkoutLoginRequired: 'برای تسویه حساب ابتدا وارد شوید.',
   },
   account: {
+    notifications: 'اعلان‌ها',
     orders: 'سفارش‌ها',
     addresses: 'آدرس‌ها',
     favorites: 'علاقه‌مندی‌ها',
@@ -389,6 +407,23 @@ const fa: Messages = {
     editProfileTitle: 'ویرایش اطلاعات کاربری',
     saveProfile: 'ذخیره تغییرات',
     cancel: 'انصراف',
+  },
+  notifications: {
+    metaTitle: 'اعلان‌ها | رهپویان',
+    pageTitle: 'اعلان‌های من',
+    dropdownTitle: 'اعلان‌ها',
+    viewAll: 'مشاهده همه اعلان‌ها',
+    empty: 'اعلانی برای نمایش وجود ندارد.',
+    markAllRead: 'علامت‌گذاری همه به‌عنوان خوانده‌شده',
+    orderPlacedTitle: 'سفارش ثبت شد',
+    orderPlacedBody: (orderId) => `سفارش ${orderId} با موفقیت ثبت شد.`,
+    orderStatusTitle: 'به‌روزرسانی سفارش',
+    orderStatusBody: (orderId, statusLabel) =>
+      `وضعیت سفارش ${orderId} به «${statusLabel}» تغییر کرد.`,
+    timeJustNow: 'همین الان',
+    timeMinutes: (count) => `${count.toLocaleString('fa-IR')} دقیقه پیش`,
+    timeHours: (count) => `${count.toLocaleString('fa-IR')} ساعت پیش`,
+    timeDays: (count) => `${count.toLocaleString('fa-IR')} روز پیش`,
   },
   admin: {
     metaTitle: 'پنل مدیریت | رهپویان',
@@ -675,6 +710,7 @@ const en: Messages = {
     checkoutLoginRequired: 'Please sign in to continue to checkout.',
   },
   account: {
+    notifications: 'Notifications',
     orders: 'Orders',
     addresses: 'Addresses',
     favorites: 'Favorites',
@@ -715,6 +751,23 @@ const en: Messages = {
     editProfileTitle: 'Edit profile information',
     saveProfile: 'Save changes',
     cancel: 'Cancel',
+  },
+  notifications: {
+    metaTitle: 'Notifications | Rahpoyan',
+    pageTitle: 'My notifications',
+    dropdownTitle: 'Notifications',
+    viewAll: 'View all notifications',
+    empty: 'No notifications yet.',
+    markAllRead: 'Mark all as read',
+    orderPlacedTitle: 'Order placed',
+    orderPlacedBody: (orderId) => `Order ${orderId} was placed successfully.`,
+    orderStatusTitle: 'Order update',
+    orderStatusBody: (orderId, statusLabel) =>
+      `Order ${orderId} is now ${statusLabel.toLowerCase()}.`,
+    timeJustNow: 'Just now',
+    timeMinutes: (count) => `${count} min ago`,
+    timeHours: (count) => `${count} hr ago`,
+    timeDays: (count) => `${count} day${count === 1 ? '' : 's'} ago`,
   },
   admin: {
     metaTitle: 'Admin Panel | Rahpoyan',

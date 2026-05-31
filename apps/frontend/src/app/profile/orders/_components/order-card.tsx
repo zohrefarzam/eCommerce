@@ -5,9 +5,9 @@ import { Button } from '@/components/base/button';
 import { Image } from '@/components/base/image';
 import type { Messages } from '@/i18n/messages';
 import type { Locale } from '@/i18n/config';
-import { formatCartMoney } from '@/lib/cart-utils';
-import type { ProfileOrder } from '@/lib/profile-orders-data';
-import { cn } from '@/lib/utils';
+import { formatCartMoney } from '@/app/cart/_lib/cart-utils';
+import type { ProfileOrder } from '@/app/profile/_lib/profile-orders-data';
+import { cn } from '@/components/base/_lib/utils';
 
 type OrderCardProps = {
   order: ProfileOrder;

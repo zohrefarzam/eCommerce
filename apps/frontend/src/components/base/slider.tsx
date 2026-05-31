@@ -5,7 +5,7 @@ import {
   Slider as HeroUISlider,
   type SliderProps as HeroUISliderProps,
 } from '@heroui/react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 
 /** Locale used for slider interaction — HeroUI/react-aria ignore `dir` on wrappers. */
 const SLIDER_LOCALE = 'en-US';

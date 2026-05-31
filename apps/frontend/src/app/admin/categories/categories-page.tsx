@@ -7,7 +7,7 @@ import { useLocale } from '@/i18n';
 import {
   useAdminCategoriesStore,
   type AdminCategory,
-} from '@/lib/admin-categories-store';
+} from '@/app/admin/_lib/admin-categories-store';
 import { AdminContentCard } from '../_components/admin-shell';
 import { AdminConfirmDeleteModal } from '../_components/admin-confirm-delete-modal';
 import { CategoryFormModal } from './_components/category-form-modal';

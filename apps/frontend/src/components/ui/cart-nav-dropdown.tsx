@@ -7,8 +7,11 @@ import { Button } from '@/components/base/button';
 import { Popover } from '@/components/base/popover';
 import { CartLineItemRow } from '@/components/ui/cart-line-item';
 import { useLocale } from '@/i18n';
-import { selectCartTotalQuantity, useCartStore } from '@/lib/cart-store';
-import { cn } from '@/lib/utils';
+import {
+  selectCartTotalQuantity,
+  useCartStore,
+} from '@/app/cart/_lib/cart-store';
+import { cn } from '@/components/base/_lib/utils';
 
 const HOVER_CLOSE_DELAY_MS = 280;
 

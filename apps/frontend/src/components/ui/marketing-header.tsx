@@ -7,13 +7,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { Input } from '@/components/base/input';
 import { AccountNav } from '@/components/ui/account-nav';
 import { CartNavDropdown } from '@/components/ui/cart-nav-dropdown';
+import { NotificationsNavDropdown } from '@/components/ui/notifications-nav-dropdown';
 import { LanguageSwitch } from '@/components/ui/language-switch';
 import { useLocale } from '@/i18n';
-import { buildProductsHref } from '@/lib/product-catalog';
-import { STOREFRONT_CONTENT_FRAME } from '@/lib/storefront-layout';
+import { buildProductsHref } from '@/app/products/_lib/product-catalog';
+import { STOREFRONT_CONTENT_FRAME } from '@/app/(landing)/_lib/storefront-layout';
 
 const iconMuted = 'text-muted shrink-0';
-const iconNav = 'shrink-0';
 
 export function MarketingHeader() {
   const { messages } = useLocale();
@@ -98,44 +98,14 @@ export function MarketingHeader() {
 }
 
 function HeaderActions({ className }: { className?: string }) {
-  const { messages } = useLocale();
-
   return (
     <div
       className={`flex shrink-0 items-center gap-0.5 text-foreground sm:gap-3 ${className ?? ''}`}
     >
       <LanguageSwitch />
-      <IconButton label={messages.header.notifications}>
-        <Icon
-          icon="lucide:bell"
-          width={22}
-          height={22}
-          className={iconNav}
-          aria-hidden
-        />
-      </IconButton>
+      <NotificationsNavDropdown />
       <CartNavDropdown />
       <AccountNav />
     </div>
-  );
-}
-
-function IconButton({
-  children,
-  label,
-  className,
-}: {
-  children: React.ReactNode;
-  label: string;
-  className?: string;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      className={`rounded-lg p-2 text-foreground transition hover:bg-surface-secondary ${className ?? ''}`}
-    >
-      {children}
-    </button>
   );
 }

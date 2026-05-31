@@ -12,7 +12,6 @@ import { useRouter } from 'next/navigation';
 import { getLandingContent } from '@/landing/_content';
 import type { LandingContent } from '@/landing/_content/types';
 import {
-  defaultLocale,
   getLocaleConfig,
   LOCALE_COOKIE,
   type Locale,

@@ -40,7 +40,7 @@ export const enLandingContent: LandingContent = {
     ],
     contact: {
       phone: '+98 21 1234 5678',
-      email: 'info@hooshmandsazan.ir',
+      email: 'info@rahpooyan.ir',
       address: 'Valiasr St, Tehran',
     },
     social: [
@@ -308,7 +308,7 @@ export const enLandingContent: LandingContent = {
         'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=1200&auto=format&fit=crop&q=80',
       imageAlt: 'PlayStation 5',
       cta: 'Explore',
-      href: '/category/gaming',
+      href: '/products/category/gaming',
     },
     {
       id: 'macbook',
@@ -330,7 +330,7 @@ export const enLandingContent: LandingContent = {
       image: headphoneProduct.src,
       imageAlt: 'Galaxy Buds',
       cta: 'Shop',
-      href: '/category/headphones',
+      href: '/products/category/headphones',
     },
     {
       id: 'watch',
@@ -341,7 +341,7 @@ export const enLandingContent: LandingContent = {
         'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
       imageAlt: 'Smartwatch Series 9',
       cta: 'Explore',
-      href: '/category/watches',
+      href: '/products/category/watches',
     },
   ],
   newArrivalSection: {
@@ -356,7 +356,7 @@ export const enLandingContent: LandingContent = {
       description: 'Consoles, accessories, and pro gaming gear.',
       image: palystaytionProduct,
       imageAlt: 'Gaming console',
-      href: '/category/gaming',
+      href: '/products/category/gaming',
     },
     {
       slug: 'phones',
@@ -365,7 +365,7 @@ export const enLandingContent: LandingContent = {
       image:
         'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=1400&auto=format&fit=crop&q=90',
       imageAlt: 'Smartphone',
-      href: '/category/phones',
+      href: '/products/category/phones',
     },
     {
       slug: 'headphones',
@@ -373,7 +373,7 @@ export const enLandingContent: LandingContent = {
       description: 'High-quality wireless headphones and speakers.',
       image: headphoneProduct,
       imageAlt: 'Wireless headphones',
-      href: '/category/headphones',
+      href: '/products/category/headphones',
     },
     {
       slug: 'watches',
@@ -381,7 +381,7 @@ export const enLandingContent: LandingContent = {
       description: 'Smart wearables for a modern lifestyle.',
       image: smartwatchProduct,
       imageAlt: 'Smartwatch',
-      href: '/category/watches',
+      href: '/products/category/watches',
     },
   ],
   serviceHighlights: [

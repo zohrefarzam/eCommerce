@@ -4,11 +4,11 @@ import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { PROFILE_NAV } from '@/lib/profile-nav';
+import { PROFILE_NAV } from '@/app/profile/_lib/profile-nav';
 import { Button } from '@/components/base/button';
 import { Popover } from '@/components/base/popover';
 import { useLocale } from '@/i18n';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 
 type AccountMenuItemProps = {
@@ -71,7 +71,7 @@ export function AccountNav() {
   if (!isAuthenticated) {
     return (
       <Button
-        href="/login"
+        href="/auth/login"
         variant="ghost"
         size="sm"
         className="h-auto min-h-0 px-2 py-1.5 text-xs font-semibold text-foreground sm:px-3 sm:text-sm"

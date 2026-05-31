@@ -6,13 +6,13 @@ import { Button } from '@/components/base/button';
 import { Input } from '@/components/base/input';
 import { Tabs } from '@/components/base/tabs';
 import { useLocale } from '@/i18n';
-import { useCheckoutOrdersStore } from '@/lib/checkout-orders-store';
+import { useCheckoutOrdersStore } from '@/app/checkout/_lib/checkout-orders-store';
 import {
   countOrdersByStatus,
   getOrdersByStatus,
   orderMatchesSearchQuery,
   type OrderStatus,
-} from '@/lib/profile-orders-data';
+} from '@/app/profile/_lib/profile-orders-data';
 import { ProfileContentCard } from '../_components/profile-shell';
 import { OrderCard } from './_components/order-card';
 

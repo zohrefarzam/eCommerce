@@ -3,9 +3,9 @@
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { ADMIN_NAV } from '@/lib/admin-nav';
+import { ADMIN_NAV } from '@/app/admin/_lib/admin-nav';
 import { useLocale } from '@/i18n';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 
 const ACTIVE_BAR = 'border-s-2 border-foreground';

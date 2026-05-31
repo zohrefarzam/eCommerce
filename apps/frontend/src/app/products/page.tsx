@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { getLandingContent } from '@/landing/_content';
 import {
+  buildProductsHref,
   getProductTabLabel,
   isValidCategorySlug,
   isValidProductTab,
-} from '@/lib/product-catalog';
+  parseProductsSearchParams,
+} from '@/app/products/_lib/product-catalog';
 import type { ProductTabId } from '@/landing/_content/types';
 import { getLocaleFromCookie, getMessages } from '@/i18n';
 import { Suspense } from 'react';
@@ -21,6 +24,7 @@ type ProductsPageProps = {
     priceMax?: string | string[];
     brand?: string | string[];
     storage?: string | string[];
+    q?: string | string[];
   }>;
 };
 
@@ -78,7 +82,25 @@ function ProductsListingFallback() {
 export default async function ProductsPage({
   searchParams,
 }: ProductsPageProps) {
-  await searchParams;
+  const params = await searchParams;
+  const cookieStore = await cookies();
+  const locale = getLocaleFromCookie(cookieStore);
+  const landing = getLandingContent(locale);
+  const parsed = parseProductsSearchParams({
+    category: resolveSearchParam(params.category),
+    tab: resolveSearchParam(params.tab),
+    page: resolveSearchParam(params.page),
+    sort: resolveSearchParam(params.sort),
+    priceMin: resolveSearchParam(params.priceMin),
+    priceMax: resolveSearchParam(params.priceMax),
+    brand: resolveSearchParam(params.brand),
+    storage: resolveSearchParam(params.storage),
+    q: resolveSearchParam(params.q),
+  });
+
+  if (parsed.category && isValidCategorySlug(landing, parsed.category)) {
+    redirect(buildProductsHref(parsed));
+  }
 
   return (
     <Suspense fallback={<ProductsListingFallback />}>

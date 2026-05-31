@@ -3,8 +3,8 @@
 import { Icon } from '@iconify/react';
 import { useEffect, useState } from 'react';
 import { useLocale } from '@/i18n';
-import { addShowcaseProductToCart } from '@/lib/cart-store';
-import { useFavoritesStore } from '@/lib/favorites-store';
+import { addShowcaseProductToCart } from '@/app/cart/_lib/cart-store';
+import { useFavoritesStore } from '@/app/profile/_lib/favorites-store';
 import { ProfileContentCard } from '../_components/profile-shell';
 import { FavoriteProductRow } from './_components/favorite-product-row';
 

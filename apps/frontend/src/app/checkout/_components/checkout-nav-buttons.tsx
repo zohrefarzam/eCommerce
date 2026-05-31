@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/base/button';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 
 type CheckoutNavButtonsProps = {
   backLabel: string;

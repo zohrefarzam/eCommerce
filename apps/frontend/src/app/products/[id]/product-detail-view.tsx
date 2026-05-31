@@ -3,9 +3,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { notFound } from 'next/navigation';
 import { useLocale } from '@/i18n';
-import { resolveStorefrontProductDetail } from '@/lib/admin-catalog-bridge';
-import { useAdminProductsStore } from '@/lib/admin-products-store';
-import { getProductDetail } from '@/lib/product-detail';
+import { resolveStorefrontProductDetail } from '@/app/admin/_lib/admin-catalog-bridge';
+import { useAdminProductsStore } from '@/app/admin/_lib/admin-products-store';
+import { getProductDetail } from '@/app/products/_lib/product-detail';
 import { ProductDetailContent } from './_components/product-detail-content';
 
 type ProductDetailViewProps = {

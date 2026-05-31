@@ -4,8 +4,11 @@ import { useMemo, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { Button } from '@/components/base/button';
 import { Modal } from '@/components/base/modal';
-import type { ProductFacets, ProductSortId } from '@/lib/product-catalog';
-import { cn } from '@/lib/utils';
+import type {
+  ProductFacets,
+  ProductSortId,
+} from '@/app/products/_lib/product-catalog';
+import { cn } from '@/components/base/_lib/utils';
 import type { ProductsFilterValues } from './products-filters';
 import { ProductsFiltersPanel } from './products-filters-panel';
 

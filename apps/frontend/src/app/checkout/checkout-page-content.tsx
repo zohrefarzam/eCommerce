@@ -8,23 +8,23 @@ import { CategoryNavBar } from '@/landing/_components/layout/category-nav-bar';
 import { SiteFooter } from '@/landing/_components/layout/site-footer';
 import { SiteShell } from '@/landing/_components/layout/site-shell';
 import { useLocale } from '@/i18n';
-import { useCartStore } from '@/lib/cart-store';
-import { getCartOrderSummary } from '@/lib/cart-utils';
-import { useCheckoutOrdersStore } from '@/lib/checkout-orders-store';
-import { isPaymentStepComplete } from '@/lib/checkout-validation';
+import { useCartStore } from '@/app/cart/_lib/cart-store';
+import { getCartOrderSummary } from '@/app/cart/_lib/cart-utils';
+import { useCheckoutOrdersStore } from '@/app/checkout/_lib/checkout-orders-store';
+import { isPaymentStepComplete } from '@/app/checkout/_lib/checkout-validation';
 import { useAuth } from '@/providers/auth-provider';
 import {
   getDeliveryTimeSlots,
   getScheduledDateLabel,
   getScheduledDateOptions,
-} from '@/lib/checkout-data';
+} from '@/app/checkout/_lib/checkout-data';
 import {
   clampCheckoutStep,
   isCheckoutComplete,
   selectSelectedAddress,
   useCheckoutStore,
   type CheckoutStep,
-} from '@/lib/checkout-store';
+} from '@/app/checkout/_lib/checkout-store';
 import { AddressStep } from './_components/address-step';
 import { CheckoutStepper } from './_components/checkout-stepper';
 import { PaymentStep } from './_components/payment-step';
@@ -98,7 +98,7 @@ export function CheckoutPageContent() {
   useEffect(() => {
     if (!isReady) return;
     if (!isAuthenticated) {
-      router.replace(`/login?returnUrl=${encodeURIComponent(returnUrl)}`);
+      router.replace(`/auth/login?returnUrl=${encodeURIComponent(returnUrl)}`);
     }
   }, [isReady, isAuthenticated, returnUrl, router]);
 

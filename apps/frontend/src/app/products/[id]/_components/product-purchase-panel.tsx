@@ -4,15 +4,18 @@ import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { Button } from '@/components/base/button';
 import { useLocale } from '@/i18n';
-import { useCartStore } from '@/lib/cart-store';
-import { showcaseToFavorite, useFavoritesStore } from '@/lib/favorites-store';
-import { cn } from '@/lib/utils';
+import { useCartStore } from '@/app/cart/_lib/cart-store';
+import {
+  showcaseToFavorite,
+  useFavoritesStore,
+} from '@/app/profile/_lib/favorites-store';
+import { cn } from '@/components/base/_lib/utils';
 import type {
   ProductColorOption,
   ProductDetail,
   ProductStorageOption,
   ProductTrustBadge,
-} from '@/lib/product-detail';
+} from '@/app/products/_lib/product-detail';
 import { ProductSpecGrid } from './product-spec-grid';
 
 type ProductPurchasePanelProps = {

@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/base/button';
 import { Image } from '@/components/base/image';
-import { cn } from '@/lib/utils';
-import type { ProductGalleryImage } from '@/lib/product-detail';
+import { cn } from '@/components/base/_lib/utils';
+import type { ProductGalleryImage } from '@/app/products/_lib/product-detail';
 
 const MAIN_IMAGE_SIZES = '(max-width: 1024px) 100vw, 720px';
 const THUMB_IMAGE_SIZES = '80px';

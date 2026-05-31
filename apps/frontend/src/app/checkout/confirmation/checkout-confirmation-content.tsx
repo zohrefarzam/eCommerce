@@ -10,7 +10,7 @@ import { CategoryNavBar } from '@/landing/_components/layout/category-nav-bar';
 import { SiteFooter } from '@/landing/_components/layout/site-footer';
 import { SiteShell } from '@/landing/_components/layout/site-shell';
 import { useLocale } from '@/i18n';
-import { useCheckoutOrdersStore } from '@/lib/checkout-orders-store';
+import { useCheckoutOrdersStore } from '@/app/checkout/_lib/checkout-orders-store';
 
 export function CheckoutConfirmationContent() {
   const searchParams = useSearchParams();

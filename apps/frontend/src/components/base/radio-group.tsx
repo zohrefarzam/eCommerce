@@ -4,7 +4,7 @@ import {
   RadioGroup as HeroUIRadioGroup,
   type RadioGroupProps as HeroUIRadioGroupProps,
 } from '@heroui/react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/components/base/_lib/utils';
 
 export type BaseRadioGroupProps = HeroUIRadioGroupProps;
 

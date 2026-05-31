@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Select } from '@/components/base/select';
 import { useLocale } from '@/i18n';
-import { useAuthStore, type UserRole } from '@/lib/auth-store';
+import { useAuthStore, type UserRole } from '@/providers/_lib/auth-store';
 import { useAuth } from '@/providers/auth-provider';
 import { AdminContentCard } from '../_components/admin-shell';
 

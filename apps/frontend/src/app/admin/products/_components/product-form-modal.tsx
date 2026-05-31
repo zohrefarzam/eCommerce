@@ -7,11 +7,11 @@ import { Button } from '@/components/base/button';
 import { Modal } from '@/components/base/modal';
 import { Select } from '@/components/base/select';
 import { useLocale } from '@/i18n';
-import { useAdminCategoriesStore } from '@/lib/admin-categories-store';
+import { useAdminCategoriesStore } from '@/app/admin/_lib/admin-categories-store';
 import type {
   AdminProduct,
   AdminProductInput,
-} from '@/lib/admin-products-store';
+} from '@/app/admin/_lib/admin-products-store';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',

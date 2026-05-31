@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import type { ProductHighlightSpec } from '@/lib/product-detail';
+import type { ProductHighlightSpec } from '@/app/products/_lib/product-detail';
 
 type ProductSpecGridProps = {
   specs: readonly ProductHighlightSpec[];

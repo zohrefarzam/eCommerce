@@ -6,7 +6,7 @@ import { MarketingHeader } from '@/components/ui/marketing-header';
 import { CategoryNavBar } from '@/landing/_components/layout/category-nav-bar';
 import { SiteFooter } from '@/landing/_components/layout/site-footer';
 import { SiteShell } from '@/landing/_components/layout/site-shell';
-import { STOREFRONT_CONTENT_FRAME } from '@/lib/storefront-layout';
+import { STOREFRONT_CONTENT_FRAME } from '@/app/(landing)/_lib/storefront-layout';
 import { useAuth } from '@/providers/auth-provider';
 import { ProfileSidebar } from './profile-sidebar';
 
@@ -37,7 +37,7 @@ export function ProfileShell({ children }: ProfileShellProps) {
   useEffect(() => {
     if (!isReady) return;
     if (!isAuthenticated) {
-      router.replace(`/login?returnUrl=${encodeURIComponent(pathname)}`);
+      router.replace(`/auth/login?returnUrl=${encodeURIComponent(pathname)}`);
     }
   }, [isReady, isAuthenticated, pathname, router]);
 

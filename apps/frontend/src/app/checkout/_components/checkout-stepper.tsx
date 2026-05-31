@@ -1,8 +1,8 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import type { CheckoutStep } from '@/lib/checkout-store';
-import { cn } from '@/lib/utils';
+import type { CheckoutStep } from '@/app/checkout/_lib/checkout-store';
+import { cn } from '@/components/base/_lib/utils';
 
 type StepConfig = {
   id: CheckoutStep;

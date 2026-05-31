@@ -1,0 +1,45 @@
+---
+description: Co-locate feature logic in _lib next to the route/feature that owns it — no src/lib
+globs: apps/frontend/**/*.{tsx,ts}
+alwaysApply: false
+---
+
+# Co-located feature `_lib`
+
+Do **not** add files under `apps/frontend/src/lib/`. Put helpers, stores, and domain logic next to the feature that owns them in a `_lib/` folder.
+
+## Where code lives
+
+| Owner | Path | Examples |
+|-------|------|----------|
+| Base UI primitives | `components/base/_lib/` | `utils.ts`, `image-source.ts` |
+| Landing / storefront shell | `app/(landing)/_lib/` | `storefront-layout.ts` |
+| Auth | `app/auth/_lib/` | `return-url.ts` |
+| Global auth state | `providers/_lib/` | `auth-store.ts` |
+| Admin | `app/admin/_lib/` | `admin-products-store.ts` |
+| Cart | `app/cart/_lib/` | `cart-store.ts`, `cart-utils.ts` |
+| Checkout | `app/checkout/_lib/` | `checkout-store.ts`, `checkout-data.ts` |
+| Products | `app/products/_lib/` | `product-catalog.ts`, `product-detail.ts` |
+| Profile | `app/profile/_lib/` | `favorites-store.ts`, `notifications-store.ts` |
+
+## Import style
+
+```tsx
+// ✅ Feature-owned module
+import { useCartStore } from '@/app/cart/_lib/cart-store';
+import { cn } from '@/components/base/_lib/utils';
+
+// ❌ Central lib (removed)
+import { useCartStore } from '@/lib/cart-store';
+```
+
+## Cross-feature imports
+
+When another route needs logic from a feature, import from that feature's `_lib` explicitly (e.g. checkout importing `@/app/cart/_lib/cart-store`). Do not copy or re-export through a shared root folder.
+
+## Adding new logic
+
+1. Identify the owning route/feature (cart, checkout, admin, etc.).
+2. Add the file under that feature's `_lib/` folder.
+3. If it is only used by base components, put it in `components/base/_lib/`.
+4. If it is app-wide provider state, put it in `providers/_lib/`.

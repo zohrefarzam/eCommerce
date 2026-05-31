@@ -14,9 +14,9 @@ import {
   parseProductsSearchParams,
   type ProductSortId,
   type ProductsListFilters,
-} from '@/lib/product-catalog';
-import { getAdminStorefrontListing } from '@/lib/admin-catalog-bridge';
-import { useAdminProductsStore } from '@/lib/admin-products-store';
+} from '@/app/products/_lib/product-catalog';
+import { getAdminStorefrontListing } from '@/app/admin/_lib/admin-catalog-bridge';
+import { useAdminProductsStore } from '@/app/admin/_lib/admin-products-store';
 import { useLandingContent, useLocale } from '@/i18n';
 
 type ProductsListingProps = {
@@ -252,10 +252,10 @@ export function ProductsListing({
   );
 }
 
-export function ProductsListingFromSearchParams() {
+function useProductsListingFilters(categorySlug?: string) {
   const searchParams = useSearchParams();
-  const parsed = parseProductsSearchParams({
-    category: searchParams.get('category') ?? undefined,
+  return parseProductsSearchParams({
+    category: categorySlug ?? searchParams.get('category') ?? undefined,
     tab: searchParams.get('tab') ?? undefined,
     page: searchParams.get('page') ?? undefined,
     sort: searchParams.get('sort') ?? undefined,
@@ -265,10 +265,36 @@ export function ProductsListingFromSearchParams() {
     storage: searchParams.get('storage') ?? undefined,
     q: searchParams.get('q') ?? undefined,
   });
+}
+
+export function ProductsListingFromSearchParams() {
+  const parsed = useProductsListingFilters();
 
   return (
     <ProductsListing
       categorySlug={parsed.category}
+      tabId={parsed.tab}
+      page={parsed.page}
+      sort={parsed.sort}
+      priceMin={parsed.priceMin}
+      priceMax={parsed.priceMax}
+      brands={parsed.brands ?? []}
+      storageGb={parsed.storageGb ?? []}
+      q={parsed.q}
+    />
+  );
+}
+
+export function ProductsListingFromCategorySlug({
+  categorySlug,
+}: {
+  categorySlug: string;
+}) {
+  const parsed = useProductsListingFilters(categorySlug);
+
+  return (
+    <ProductsListing
+      categorySlug={categorySlug}
       tabId={parsed.tab}
       page={parsed.page}
       sort={parsed.sort}
