@@ -35,5 +35,5 @@ export async function DELETE(request: NextRequest) {
 }
 
 export async function POST() {
-  return jsonBadRequest('Use POST /auth/login or /auth/sign-up');
+  return jsonBadRequest('Use POST /auth/login/api or /auth/sign-up/api');
 }

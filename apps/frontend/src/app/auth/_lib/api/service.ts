@@ -11,14 +11,14 @@ export function fetchAuthSession() {
 }
 
 export function signIn(input: SignInRequest) {
-  return apiFetch<AuthActionResponse>('/auth/login', {
+  return apiFetch<AuthActionResponse>('/auth/login/api', {
     method: 'POST',
     body: input,
   });
 }
 
 export function signUp(input: SignUpRequest) {
-  return apiFetch<AuthActionResponse>('/auth/sign-up', {
+  return apiFetch<AuthActionResponse>('/auth/sign-up/api', {
     method: 'POST',
     body: input,
   });
